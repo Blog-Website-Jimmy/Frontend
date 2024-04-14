@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: 'categories',
-        component: () => import('src/pages/AdminArticlePage.vue'),
+        component: () => import('src/pages/AdminCategoryPage.vue'),
       },
     ],
   },
