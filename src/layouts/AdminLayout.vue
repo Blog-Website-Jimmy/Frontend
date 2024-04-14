@@ -98,6 +98,7 @@ import { ref } from 'vue';
 import AdminSideBar from 'src/components/admin/AdminSideBar.vue';
 
 const leftDrawerOpen = ref(true);
+
 const search = ref('');
 
 function toggleLeftDrawer() {
