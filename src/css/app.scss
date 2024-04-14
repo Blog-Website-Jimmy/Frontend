@@ -16,6 +16,12 @@
     margin-top: 100px;
   }
 }
+
+.article-content {
+  width: 800px;
+  padding: 10px;
+  font-size: large;
+}
 .q-toolbar {
   padding: 0;
 }
@@ -25,29 +31,10 @@
 .j-side-bar {
   max-width: 262px;
 }
-@media only screen and (max-width: 1580px) {
-  .j-container {
-    padding-inline: 5vw;
-  }
-}
-
-@media only screen and (max-width: 1405px) {
-  .my-card {
-    width: 250px;
-  }
-}
-
-@media only screen and (max-width: 1340px) {
-  aside {
-    display: none;
-  }
-  .q-page-container {
-    width: 100% !important;
-    margin-left: 0;
-  }
-  .my-card {
-    width: 300px;
-  }
+.article-page {
+  border-radius: 20px;
+  margin: 20px;
+  background-color: rgb(247, 241, 253);
 }
 
 .page-button {
@@ -63,12 +50,175 @@
   width: 400px;
 }
 
-.article-page {
-  border-radius: 20px;
-}
 .image-path,
 .image-tag {
   border: 1px dotted black;
   border-radius: 5px;
   padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 40ch;
+}
+.comments {
+  padding-left: 50px;
+}
+
+.comment-text-area {
+  height: 50px;
+}
+pre {
+  overflow-x: scroll;
+}
+pre::-webkit-scrollbar,
+pre code.hljs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+pre,
+pre code.hljs {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.copy-btn,
+.copy-command-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 10;
+  color: #fff;
+  padding: 3px;
+  background-color: rgb(52, 111, 240);
+  border-radius: 5px;
+  margin-left: 10px;
+  max-height: 30px;
+  font-size: 14px !important;
+  cursor: pointer;
+}
+.copy-text-content,
+.copy-text-content > code {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  background-color: #2b2b2b;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: left;
+}
+.drawer-close {
+  display: none;
+  height: 30px;
+  &--btn {
+    position: absolute;
+    right: 1px;
+  }
+}
+.subscribe-input {
+  display: flex;
+  flex-wrap: nowrap;
+
+  .q-field {
+    width: 145px;
+    min-width: 145px;
+  }
+}
+.get-premium-btn {
+  min-width: 130px;
+  width: 130px;
+}
+.article-image {
+  width: 40vw;
+}
+.edit-article-my-card {
+  .q-img--menu {
+    width: 300px;
+    height: 200px;
+  }
+}
+.jimmy-editor {
+  width: 1070px;
+  max-width: 1070px;
+}
+
+.uploaded-images {
+  max-width: 1070px;
+  width: 1070px;
+  overflow-x: scroll;
+}
+.copy-code-content {
+  position: relative;
+  color: #fff;
+  background-color: #2b2b2b;
+  border-radius: 5px;
+  padding: 10px;
+  overflow-x: hidden;
+}
+// ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
+
+@media only screen and (max-width: 1580px) {
+  .j-container {
+    padding-inline: 5vw;
+  }
+}
+
+@media only screen and (max-width: 1405px) {
+  .my-card {
+    width: 250px;
+  }
+}
+
+@media only screen and (max-width: 1340px) {
+  .j-aside {
+    display: none;
+  }
+  .drawer-close {
+    display: block;
+  }
+  .q-page-container {
+    width: 100% !important;
+    margin-left: 0;
+  }
+  .my-card {
+    width: 300px;
+  }
+  .article-content {
+    width: 80vw;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .subscribe-input {
+    .q-field {
+      width: 100px;
+      min-width: 100px;
+    }
+  }
+  h3 {
+    font-size: 2rem;
+  }
+  .article-content {
+    font-size: medium;
+  }
+  .article-image {
+    width: 70vw;
+  }
+  pre,
+  pre > span {
+    font-size: 10px !important;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .j-container {
+    padding: 3px;
+  }
+  .article-page {
+    background-color: transparent;
+  }
+  body {
+    background-color: rgb(247, 241, 253);
+  }
+  .q-breadcrumbs {
+    margin-top: 80px;
+  }
 }

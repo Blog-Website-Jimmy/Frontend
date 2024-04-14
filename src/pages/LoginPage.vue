@@ -5,7 +5,20 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input v-model="username" label="Username" hint="Email" outlined />
 
-        <q-input type="password" v-model="password" label="Password" outlined />
+        <q-input
+          :type="passwordType"
+          v-model="password"
+          label="Password"
+          outlined
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="passwordTypeIcon"
+              @click="changePasswordType"
+              class="cursor-pointer"
+            />
+          </template>
+        </q-input>
 
         <div class="row justify-between">
           <q-btn label="Login" type="submit" color="primary" />
@@ -21,9 +34,13 @@ import { ref } from 'vue';
 import { loginUser } from 'src/axios-requests';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useUserStore } from 'src/stores/user-store';
 
 const username = ref('');
 const password = ref('');
+const userStore = useUserStore();
+let passwordType = ref(<'password' | 'text'>'password');
+let passwordTypeIcon = ref('visibility');
 const router = useRouter();
 const $q = useQuasar();
 const onReset = () => {
@@ -31,16 +48,29 @@ const onReset = () => {
   password.value = '';
 };
 
+const changePasswordType = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = 'text';
+    passwordTypeIcon.value = 'visibility_off';
+  } else {
+    passwordType.value = 'password';
+    passwordTypeIcon.value = 'visibility';
+  }
+};
+
 const onSubmit = () => {
   loginUser(username.value, password.value)
     .then((res) => {
-      console.log(res);
+      localStorage.setItem('token', res.token);
+      userStore.user = 'jimi';
+      userStore.token = res.token;
+
       router.push('/admin');
     })
     .catch((error) => {
-      console.log(error.response.data);
+      console.log(error.response);
       $q.notify({
-        message: error.response.data,
+        message: error.response,
         type: 'negative',
       });
     });

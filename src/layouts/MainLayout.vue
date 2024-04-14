@@ -9,6 +9,7 @@
           icon="menu"
           v-if="$q.screen.width < 1340"
           aria-label="Menu"
+          @click="toggleLeftDrawer"
         />
 
         <q-toolbar-title @click="toHome" class="cursor-pointer">
@@ -26,16 +27,20 @@
         :label="route.params.category"
       />
     </q-breadcrumbs>
+
     <div class="row j-container">
-      <aside class="col-2">
+      <aside class="j-aside col-2">
         <SideBar />
       </aside>
+      <q-drawer v-model="leftDrawerOpen" overlay bordered class="q-ma-sm">
+        <SideBar />
+      </q-drawer>
 
       <q-page-container class="col-9">
         <router-view />
       </q-page-container>
     </div>
-    <FooterComponent />
+    <FooterComponent class="q-mt-xl" />
   </q-layout>
 </template>
 
@@ -45,6 +50,8 @@ import SideBar from 'src/components/user/SideBar.vue';
 import { useQuasar } from 'quasar';
 import { useRouter, useRoute } from 'vue-router';
 import FooterComponent from 'src/components/user/FooterComponent.vue';
+import { bus } from 'src/axios-requests';
+import { onMounted } from 'vue';
 
 const route = useRoute();
 const $q = useQuasar();
@@ -54,5 +61,17 @@ const toHome = () => {
   router.push({ path: '/' });
 };
 
+const leftDrawerOpen = ref(false);
+
 const version = ref('0.0.1');
+
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+};
+
+onMounted(() => {
+  bus.on('closeDrawer', () => {
+    leftDrawerOpen.value = !leftDrawerOpen.value;
+  });
+});
 </script>

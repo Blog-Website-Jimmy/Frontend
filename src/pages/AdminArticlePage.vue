@@ -10,6 +10,7 @@
         :author="post.author.name"
         :brief="post.brief"
         :image="getMianImage(post.images)"
+        :id="post.id"
       />
     </div>
     <div class="full-width q-ma-xl">
