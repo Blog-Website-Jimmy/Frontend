@@ -106,7 +106,7 @@ const isDrawerOpen = computed(() => {
 
 const links1 = [
   { icon: 'article', text: 'Articles', to: '/admin/articles' },
-  { icon: 'category', text: 'Categories', to: '/categories' },
+  { icon: 'category', text: 'Categories', to: '/admin/categories' },
   { icon: 'subscriptions', text: 'Subscriptions', to: '/subscriptions' },
 ];
 const links2 = [
