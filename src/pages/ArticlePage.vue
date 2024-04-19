@@ -26,12 +26,12 @@
             {{ 345 }}
           </span>
         </div>
-        <!-- <q-icon
+        <q-icon
           name="share"
           size="35px"
           color="primary"
           class="cursor-pointer q-mx-xl"
-        /> -->
+        />
       </div>
       <q-form class="q-gutter-md q-mb-xl">
         <q-input
