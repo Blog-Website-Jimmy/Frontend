@@ -1,12 +1,74 @@
 <template>
-  <q-page
-    class="row items-center justify-evenly q-ma-md bg-indigo-1 article-page"
-  >
-    <div>
-      <h3 class="full-width">
-        {{ title }}
-      </h3>
-      <p v-html="article?.content"></p>
+  <q-page>
+    <div
+      class="row items-center justify-evenly q-ma-md bg-indigo-1 article-page"
+    >
+      <div>
+        <h3 class="full-width">
+          {{ title }}
+        </h3>
+        <p v-html="article?.content"></p>
+      </div>
+    </div>
+
+    <div class="comments full-width text-subtitle1">
+      <div class="text-bold text-h6 row q-gutter-sm">
+        {{ article?.comments.length }} {{ commentsText }}
+        <q-space />
+        <div class="q-mr-xl">
+          <q-icon
+            name="thumb_up"
+            size="35px"
+            color="secondary"
+            class="cursor-pointer"
+          />
+          <span class="q-ma-sm">
+            {{ 345 }}
+          </span>
+        </div>
+        <!-- <q-icon
+          name="share"
+          size="35px"
+          color="primary"
+          class="cursor-pointer q-mx-xl"
+        /> -->
+      </div>
+      <q-form class="q-gutter-md q-mb-xl">
+        <q-input
+          v-model="author"
+          style="max-width: 200px"
+          dense
+          placeholder="Name"
+          clearable
+        />
+        <q-input
+          v-model="comment"
+          dense
+          :type="commentTextAreaType"
+          placeholder="Your comment"
+          clearable
+          @focus="commentTextAreaType = 'textarea'"
+        />
+        <q-btn color="primary" @click="addCommentToArticle">Add Comment</q-btn>
+      </q-form>
+      <div
+        v-for="comment in article?.comments"
+        :key="comment.id"
+        class="row q-my-sm"
+      >
+        <div>
+          <q-icon
+            name="account_circle"
+            size="70px"
+            color="primary"
+            class="q-mr-sm"
+          />
+        </div>
+        <div>
+          <div class="text-bold q-mt-sm">{{ comment.author }}</div>
+          <div>{{ comment.comment }}</div>
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
@@ -17,11 +79,37 @@ import { useArticleStore } from 'src/stores/article-store';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { Post } from 'src/signatures';
+import { computed } from 'vue';
+import { addComment } from 'src/axios-requests';
 const articleStore = useArticleStore();
 const route = useRoute();
 const title = route.params.article;
 const article = ref<Post>();
+const author = ref('');
+const comment = ref('');
+const commentTextAreaType = ref('text');
 onMounted(() => {
   article.value = articleStore.posts.filter((post) => post.title == title)[0];
 });
+
+const commentsText = computed(() => {
+  let articles = articleStore.posts.filter((post) => post.title == title)[0];
+  return articles?.comments.length > 1 ? 'comments' : 'comment';
+});
+const addCommentToArticle = () => {
+  addComment(author.value, comment.value, article.value.id)
+    .then((data) => {
+      article.value?.comments.unshift({
+        author: author.value,
+        comment: comment.value,
+        id: 99,
+      });
+      console.log(data);
+      author.value = '';
+      comment.value = '';
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 </script>

@@ -10,7 +10,14 @@
           aria-label="Menu"
           icon="menu"
         />
-        <q-btn flat no-caps no-wrap class="q-ml-xs" v-if="$q.screen.gt.xs">
+        <q-btn
+          flat
+          no-caps
+          no-wrap
+          class="q-ml-xs"
+          to="/admin"
+          v-if="$q.screen.gt.xs"
+        >
           <q-icon name="admin_panel_settings" color="blue" size="28px" />
           <q-toolbar-title shrink class="text-weight-bold">
             My Blog

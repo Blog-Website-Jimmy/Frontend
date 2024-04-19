@@ -2,6 +2,8 @@ import axios from 'axios';
 import { useArticleStore } from './stores/article-store';
 import { EventBus } from 'quasar';
 import { Category } from './signatures';
+import { resolve } from 'dns';
+import { error } from 'console';
 
 const url = process.env.API;
 const article_store = useArticleStore();
@@ -16,6 +18,7 @@ export const getPosts = (page: number, size: number): Promise<number> => {
         },
       })
       .then((res) => {
+        console.log(res.data.articles);
         article_store.posts = res.data.articles;
         resolve(res.data.totalPages);
       })
@@ -88,6 +91,28 @@ export const getAuthors = (): Promise<Category[]> => {
       });
   });
 };
+
+export const addComment = (
+  author: string,
+  comment: string,
+  articleId: number
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'article/add-comment', {
+        author: author,
+        comment: comment,
+        articleId: articleId,
+      })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const postArticle = (
   title: string,
   brief: string,

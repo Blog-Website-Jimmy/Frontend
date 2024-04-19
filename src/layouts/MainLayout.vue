@@ -35,7 +35,7 @@
         <router-view />
       </q-page-container>
     </div>
-    <FooterComponent />
+    <FooterComponent class="q-mt-xl" />
   </q-layout>
 </template>
 
