@@ -17,21 +17,22 @@
         <q-space />
         <div class="q-mr-xl">
           <q-icon
-            name="thumb_up"
+            :name="like"
             size="35px"
-            color="secondary"
+            color="teal"
             class="cursor-pointer"
+            @click="likeTheArticle()"
           />
           <span class="q-ma-sm">
-            {{ 345 }}
+            {{ likeCounts }}
           </span>
         </div>
-        <q-icon
+        <!-- <q-icon
           name="share"
           size="35px"
           color="primary"
           class="cursor-pointer q-mx-xl"
-        />
+        /> -->
       </div>
       <q-form class="q-gutter-md q-mb-xl">
         <q-input
@@ -80,7 +81,9 @@ import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { Post } from 'src/signatures';
 import { computed } from 'vue';
-import { addComment } from 'src/axios-requests';
+import { addComment, likeArticle, dislikeArticle } from 'src/axios-requests';
+import { useQuasar } from 'quasar';
+
 const articleStore = useArticleStore();
 const route = useRoute();
 const title = route.params.article;
@@ -88,8 +91,13 @@ const article = ref<Post>();
 const author = ref('');
 const comment = ref('');
 const commentTextAreaType = ref('text');
+const like = ref('thumb_up_off_alt');
+const $q = useQuasar();
+let likeCounts = ref(article.value?.likes || 0);
+
 onMounted(() => {
   article.value = articleStore.posts.filter((post) => post.title == title)[0];
+  likeCounts.value = article.value?.likes;
 });
 
 const commentsText = computed(() => {
@@ -107,9 +115,41 @@ const addCommentToArticle = () => {
       console.log(data);
       author.value = '';
       comment.value = '';
+      $q.notify({
+        message: data,
+        type: 'positive',
+      });
     })
     .catch((err) => {
       console.log(err);
+      $q.notify({
+        message: 'Something is wrong',
+        type: 'negative',
+      });
     });
+};
+
+const likeTheArticle = () => {
+  if (like.value == 'thumb_up_off_alt') {
+    likeArticle(article.value?.id).then((res) => {
+      console.log(res);
+      likeCounts.value++;
+      $q.notify({
+        message: res,
+        type: 'positive',
+      });
+    });
+    like.value = 'thumb_up_alt';
+  } else {
+    dislikeArticle(article.value?.id).then((res) => {
+      console.log(res);
+      likeCounts.value--;
+      $q.notify({
+        message: res,
+        type: 'negative',
+      });
+    });
+    like.value = 'thumb_up_off_alt';
+  }
 };
 </script>

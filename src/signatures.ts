@@ -6,6 +6,7 @@ export interface Post {
   author: Author;
   images: Array<Image>;
   comments: Array<Comment>;
+  likes: number;
 }
 export interface Author {
   id: number;

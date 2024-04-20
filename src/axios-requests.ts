@@ -140,4 +140,29 @@ export const postArticle = (
   });
 };
 
+export const likeArticle = (id: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'article/like/' + id)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const dislikeArticle = (id: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'article/dislike/' + id)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const bus = new EventBus();
