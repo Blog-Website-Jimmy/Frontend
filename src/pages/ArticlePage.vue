@@ -113,7 +113,7 @@ const addCommentToArticle = () => {
         id: 99,
       });
       console.log(data);
-      author.value = '';
+      author.value = 'Guest';
       comment.value = '';
       $q.notify({
         message: data,
