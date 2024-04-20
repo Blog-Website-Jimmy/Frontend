@@ -16,7 +16,7 @@
         <q-btn flat @click="toggleReadony"> Edit </q-btn>
 
         <q-space />
-        <q-btn flat>Delete</q-btn>
+        <q-btn flat @click="deleteArticle(props.id)">Delete</q-btn>
       </q-card-actions>
     </q-card>
   </div>
@@ -37,6 +37,8 @@ const categoryName = computed(() => {
 const toggleReadony = () => {
   readonly.value = !readonly.value;
 };
-
-const url = process.env.API;
+const deleteArticle = (id: number) => {
+  alert(id);
+  console.log('id is', id);
+};
 </script>
