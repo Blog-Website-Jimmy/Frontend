@@ -16,6 +16,11 @@
     margin-top: 100px;
   }
 }
+
+.article-content {
+  width: 800px;
+  padding: 10px;
+}
 .q-toolbar {
   padding: 0;
 }
@@ -25,6 +30,58 @@
 .j-side-bar {
   max-width: 262px;
 }
+.article-page {
+  border-radius: 20px;
+  margin: 20px;
+  background-color: rgb(247, 241, 253);
+}
+
+.page-button {
+  width: 10px;
+  height: 10px;
+}
+.j-breadcrumbs {
+  padding-top: 100px;
+  padding-bottom: 20px;
+}
+.j-form {
+  padding: 20px;
+  width: 400px;
+}
+
+.image-path,
+.image-tag {
+  border: 1px dotted black;
+  border-radius: 5px;
+  padding: 5px;
+}
+.comments {
+  padding-left: 50px;
+}
+
+.comment-text-area {
+  height: 50px;
+}
+
+.copy-btn {
+  color: #fff;
+  padding: 3px;
+  background-color: rgb(52, 111, 240);
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+.copy-text-content {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  background-color: rgb(33, 34, 32);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+// ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
+
 @media only screen and (max-width: 1580px) {
   .j-container {
     padding-inline: 5vw;
@@ -48,34 +105,21 @@
   .my-card {
     width: 300px;
   }
+  .article-content {
+    width: 80vw;
+  }
 }
-
-.page-button {
-  width: 10px;
-  height: 10px;
-}
-.j-breadcrumbs {
-  padding-top: 100px;
-  padding-bottom: 20px;
-}
-.j-form {
-  padding: 20px;
-  width: 400px;
-}
-
-.article-page {
-  border-radius: 20px;
-}
-.image-path,
-.image-tag {
-  border: 1px dotted black;
-  border-radius: 5px;
-  padding: 5px;
-}
-.comments {
-  padding-left: 50px;
-}
-
-.comment-text-area {
-  height: 50px;
+@media only screen and (max-width: 600px) {
+  .j-container {
+    padding: 3px;
+  }
+  .article-page {
+    background-color: transparent;
+  }
+  body {
+    background-color: rgb(247, 241, 253);
+  }
+  .q-breadcrumbs {
+    margin-top: 80px;
+  }
 }

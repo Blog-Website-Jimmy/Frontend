@@ -126,6 +126,15 @@
           @click="copyTextToClipboard(imageTag)"
         />
       </div>
+      <div class="q-my-lg">
+        <span class="image-tag">Click me to copy code to HTML</span>
+        <q-icon
+          class="q-ml-sm cursor-pointer"
+          size="25px"
+          name="content_copy"
+          @click="copyTextToClipboard(copyCode)"
+        />
+      </div>
       <div class="column q-mt-md">
         <div
           class="row justify-between q-mt-sm"
@@ -175,6 +184,9 @@ const imageTag = computed(() => {
   return (
     '<img src="' + url?.substring(0, url.length - 1) + '" alt="" width="600" />'
   );
+});
+const copyCode = computed(() => {
+  return '<div class="copy-text-content"><span class="content"> copy me to clipboard</span><span class="copy-btn">copy</span></div>';
 });
 const imageUplaodURL = computed(() => {
   return process.env.API + 'article/upload/image/' + title.value;

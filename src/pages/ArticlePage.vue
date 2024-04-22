@@ -1,13 +1,11 @@
 <template>
   <q-page>
-    <div
-      class="row items-center justify-evenly q-ma-md bg-indigo-1 article-page"
-    >
+    <div class="row items-center justify-evenly article-page">
       <div>
         <h3 class="full-width">
           {{ title }}
         </h3>
-        <p v-html="article?.content"></p>
+        <p v-html="article?.content" class="article-content"></p>
       </div>
     </div>
 
@@ -83,6 +81,8 @@ import { Post } from 'src/signatures';
 import { computed } from 'vue';
 import { addComment, likeArticle, dislikeArticle } from 'src/axios-requests';
 import { useQuasar } from 'quasar';
+import { copyToClipboard } from 'quasar';
+import { nextTick } from 'vue';
 
 const articleStore = useArticleStore();
 const route = useRoute();
@@ -94,11 +94,6 @@ const commentTextAreaType = ref('text');
 const like = ref('thumb_up_off_alt');
 const $q = useQuasar();
 let likeCounts = ref(article.value?.likes || 0);
-
-onMounted(() => {
-  article.value = articleStore.posts.filter((post) => post.title == title)[0];
-  likeCounts.value = article.value?.likes;
-});
 
 const commentsText = computed(() => {
   let articles = articleStore.posts.filter((post) => post.title == title)[0];
@@ -152,4 +147,38 @@ const likeTheArticle = () => {
     like.value = 'thumb_up_off_alt';
   }
 };
+
+const copytext = (event: Event) => {
+  event.target.innerHTML = 'copied';
+  const textToCopy =
+    event.target.parentNode.querySelector('.content').textContent;
+
+  copyToClipboard(textToCopy)
+    .then(() => {
+      $q.notify({
+        message: 'Text was copied',
+        type: 'positive',
+      });
+    })
+    .catch(() => {
+      $q.notify({
+        message: 'Failed to copy text',
+        type: 'negative',
+      });
+    });
+  setTimeout(() => {
+    event.target.innerHTML = 'copy';
+  }, 5000);
+};
+
+onMounted(() => {
+  article.value = articleStore.posts.filter((post) => post.title == title)[0];
+  likeCounts.value = article.value?.likes;
+  nextTick(() => {
+    let copyBtns = document.getElementsByClassName('copy-btn');
+    for (let i = 0; i < copyBtns.length; i++) {
+      copyBtns[i].addEventListener('click', copytext);
+    }
+  });
+});
 </script>
