@@ -1,5 +1,13 @@
 <template>
   <div class="j-side-bar">
+    <div class="drawer-close">
+      <q-icon
+        name="close"
+        size="20px"
+        class="drawer-close--btn"
+        @click="closeDrawer"
+      />
+    </div>
     <q-form>
       <q-input
         rounded
@@ -86,4 +94,8 @@ onMounted(() => {
     categories.value = data;
   });
 });
+
+const closeDrawer = () => {
+  bus.emit('closeDrawer');
+};
 </script>
