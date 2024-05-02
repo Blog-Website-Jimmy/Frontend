@@ -53,18 +53,18 @@
       <div
         v-for="comment in article?.comments"
         :key="comment.id"
-        class="row q-my-sm"
+        class="row no-wrap q-my-sm"
       >
         <div>
           <q-icon
             name="account_circle"
             size="70px"
             color="primary"
-            class="q-mr-sm"
+            class="q-mr-sm col-2"
           />
         </div>
         <div>
-          <div class="text-bold q-mt-sm">{{ comment.author }}</div>
+          <div class="text-bold q-mt-sm col-10">{{ comment.author }}</div>
           <div>{{ comment.comment }}</div>
         </div>
       </div>
