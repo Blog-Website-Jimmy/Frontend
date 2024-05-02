@@ -4,7 +4,7 @@
       <q-card-section class="text-h5 q-ma-md">
         <q-input
           v-model="categoryName"
-          borderless
+          :borderless="readonly"
           :readonly="readonly"
           input-style="text-align: center; font-size: 20px"
         />
@@ -13,32 +13,95 @@
       <q-separator />
 
       <q-card-actions>
-        <q-btn flat @click="toggleReadony"> Edit </q-btn>
+        <q-btn flat v-if="!changed" @click="toggleReadony"> Edit </q-btn>
+        <q-btn flat v-else color="teal" @click="update"> Apply </q-btn>
 
         <q-space />
-        <q-btn flat @click="deleteArticle(props.id)">Delete</q-btn>
+        <q-btn v-if="!changed" flat @click="postDeleteCategory"> Delete </q-btn>
+        <q-btn flat v-else color="negative" @click="cancelChanges"
+          >Cancel</q-btn
+        >
       </q-card-actions>
     </q-card>
   </div>
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
 import { ref } from 'vue';
-import { computed } from 'vue';
+import { updateCategory, deleteCategory, bus } from 'src/axios-requests';
+import { useQuasar } from 'quasar';
 
 const props = defineProps(['id', 'name']);
 
 const readonly = ref(true);
+const changed = ref(false);
+const $q = useQuasar();
 
-const categoryName = computed(() => {
-  return props.name;
-});
+const categoryName = ref(props.name);
+const cancelChanges = () => {
+  toggleReadony();
+  changed.value = !changed.value;
+  categoryName.value = props.name;
+};
 
 const toggleReadony = () => {
   readonly.value = !readonly.value;
 };
-const deleteArticle = (id: number) => {
-  alert(id);
-  console.log('id is', id);
+const update = () => {
+  updateCategory(categoryName.value, props.id)
+    .then((data) => {
+      changed.value = false;
+      readonly.value = true;
+      $q.notify({
+        message: data,
+        type: 'positive',
+      });
+    })
+    .catch(() => {
+      $q.notify({
+        message: 'Something is wrong',
+        type: 'negative',
+      });
+    });
 };
+const postDeleteCategory = () => {
+  $q.notify({
+    message: 'Are you sure?',
+    color: 'negative',
+    position: 'center',
+    actions: [
+      {
+        label: 'Delete',
+        color: 'yellow',
+        handler: () => {
+          deleteCategory(props.id)
+            .then((data) => {
+              $q.notify({
+                message: data,
+                type: 'positive',
+              });
+              bus.emit('update-categories');
+            })
+            .catch(() => {
+              $q.notify({
+                message: 'Something is wrong!',
+                type: 'negative',
+              });
+            });
+        },
+      },
+      {
+        label: 'Cancel',
+        color: 'white',
+        handler: () => {
+          /* cancel deletion */
+        },
+      },
+    ],
+  });
+};
+watch(categoryName, (newVal) => {
+  changed.value = newVal !== props.name;
+});
 </script>

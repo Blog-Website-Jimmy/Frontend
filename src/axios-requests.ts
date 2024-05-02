@@ -2,8 +2,6 @@ import axios from 'axios';
 import { useArticleStore } from './stores/article-store';
 import { EventBus } from 'quasar';
 import { Category } from './signatures';
-import { resolve } from 'dns';
-import { error } from 'console';
 
 const url = process.env.API;
 const article_store = useArticleStore();
@@ -169,6 +167,45 @@ export const deleteArticle = (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
       .delete(url + 'article/delete/' + id)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const addCategory = (name: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'category/add', name)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const updateCategory = (name: string, id: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'category/update/' + id, name)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const deleteCategory = (id: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(url + 'category/delete/' + id)
       .then((res) => {
         resolve(res.data);
       })

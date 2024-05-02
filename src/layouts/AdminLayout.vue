@@ -53,10 +53,13 @@
             flat
             color="grey-8"
             icon="add_box"
-            to="/add-article"
+            @click="createNode"
             v-if="$q.screen.gt.sm"
           >
-            <q-tooltip>Create a post</q-tooltip>
+            <q-tooltip v-if="route.fullPath == '/admin/articles'">
+              Create a post
+            </q-tooltip>
+            <q-tooltip v-else> Create a category </q-tooltip>
           </q-btn>
           <q-btn
             round
@@ -101,11 +104,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import AdminSideBar from 'src/components/admin/AdminSideBar.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { onMounted } from 'vue';
+import { bus } from 'src/axios-requests';
+
+const route = useRoute();
+const router = useRouter();
+onMounted(() => {
+  console.log('route is => ', route.fullPath);
+});
+watch(route, () => {
+  console.log('route is => ', route.fullPath);
+});
 
 const leftDrawerOpen = ref(true);
 const search = ref('');
+const createNode = () => {
+  if (route.fullPath == '/admin/articles') {
+    router.push({ path: '/add-article' });
+    return;
+  }
+  if (route.fullPath == '/admin/categories') {
+    bus.emit('add-category');
+    return;
+  }
+};
 
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
