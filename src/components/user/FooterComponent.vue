@@ -1,6 +1,7 @@
 <template>
   <div
-    class="row justify-aroud bg-primary shadow-up-5 text-center q-pa-xl text-white text-h6"
+    class="row justify-aroud bg-primary shadow-up-5 text-center q-pa-xl text-white"
+    :class="[$q.screen.width > 700 ? 'text-h6' : 'text-subtitle1', errorClass]"
   >
     <div class="col-xs-12 col-sm-4 q-mb-xl">
       <div class="row column">
