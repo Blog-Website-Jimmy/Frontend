@@ -101,6 +101,9 @@
   min-width: 130px;
   width: 130px;
 }
+.article-image {
+  width: 40vw;
+}
 
 // ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
 
@@ -146,6 +149,9 @@
   }
   .article-content {
     font-size: medium;
+  }
+  .article-image {
+    width: 70vw;
   }
 }
 @media only screen and (max-width: 600px) {

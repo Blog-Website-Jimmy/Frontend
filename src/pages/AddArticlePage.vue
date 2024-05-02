@@ -182,7 +182,9 @@ const imagePaths = ref<Array<string>>([]);
 const url = process.env.API;
 const imageTag = computed(() => {
   return (
-    '<img src="' + url?.substring(0, url.length - 1) + '" alt="" width="600" />'
+    '<img src="' +
+    url?.substring(0, url.length - 1) +
+    '" alt="" class="article-image" />'
   );
 });
 const copyCode = computed(() => {
