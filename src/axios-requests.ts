@@ -138,6 +138,33 @@ export const postArticle = (
   });
 };
 
+export const updateArticle = (
+  title: string,
+  brief: string,
+  author: any,
+  content: string,
+  category: any,
+  imageIds: Array<string>
+): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url + 'article/update', {
+        title: title,
+        brief: brief,
+        authorId: author.id,
+        content: content,
+        categoryId: category.id,
+        imageIds: imageIds,
+      })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const likeArticle = (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
@@ -206,6 +233,18 @@ export const deleteCategory = (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
       .delete(url + 'category/delete/' + id)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const deleteImage = (id: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(url + 'article/delete/image/' + id)
       .then((res) => {
         resolve(res.data);
       })

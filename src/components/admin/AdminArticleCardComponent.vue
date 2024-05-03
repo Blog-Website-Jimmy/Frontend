@@ -14,7 +14,7 @@
       <q-separator />
 
       <q-card-actions>
-        <q-btn flat> Edit </q-btn>
+        <q-btn flat @click="editArticle"> Edit </q-btn>
 
         <q-space />
         <q-btn flat @click="deletePost(props.id)">Delete</q-btn>
@@ -27,9 +27,15 @@
 const props = defineProps(['title', 'author', 'brief', 'image', 'id']);
 import { deleteArticle } from 'src/axios-requests';
 import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 const url = process.env.API;
 const $q = useQuasar();
+const router = useRouter();
+const editArticle = () => {
+  let path = 'article/edit/' + props.title;
+  router.push({ path: path });
+};
 
 const deletePost = (id: number) => {
   $q.notify({
