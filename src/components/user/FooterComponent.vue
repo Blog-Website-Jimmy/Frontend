@@ -13,7 +13,7 @@
         <span class="cursor-pointer">Ask a question</span>
         <span class="cursor-pointer">Contacts</span>
         <span class="cursor-pointer">Portfolio</span>
-        <span class="cursor-pointer">menu 1</span>
+        <span class="cursor-pointer">Jobs</span>
       </div>
     </div>
     <div class="col-xs-6 col-sm-2">
