@@ -264,6 +264,15 @@ onMounted(() => {
 });
 
 const updateWork = () => {
+  if (!checkMainImageExists()) {
+    $q.notify({
+      message: 'There is no Main Image!',
+      type: 'warning',
+      position: 'center',
+      timeout: 1000,
+    });
+    return;
+  }
   updateArticle(
     title.value,
     brief.value,
@@ -316,6 +325,15 @@ const uploadIt = (response: any) => {
   console.log(path);
   imageIds.value.push(id);
   imagePaths.value.push(path);
+};
+
+const checkMainImageExists = () => {
+  return (
+    article.value.images.some((image) => image.name === 'Main') ||
+    imagePaths.value.some((path) => {
+      return path.split('/')[3].includes('Main');
+    })
+  );
 };
 
 const copyTextToClipboard = (text: string) => {
