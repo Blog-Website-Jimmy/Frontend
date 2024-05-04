@@ -171,12 +171,14 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { computed } from 'vue';
 import { copyToClipboard } from 'quasar';
+import { useRouter } from 'vue-router';
 
 const category = ref('Select One');
 const content = ref('');
 const title = ref('title');
 const author = ref('author');
 const brief = ref('brief');
+const router = useRouter();
 const imageIds = ref<Array<string>>([]);
 const imagePaths = ref<Array<string>>([]);
 const url = process.env.API;
@@ -231,12 +233,12 @@ const saveWork = () => {
     imageIds.value
   )
     .then((res) => {
-      console.log(res);
       clearAllData();
       $q.notify({
         message: res,
         type: 'positive',
       });
+      router.push({ path: '/admin/articles' });
     })
     .catch((error) => {
       if (error.response.status == 400) {

@@ -211,7 +211,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { computed } from 'vue';
 import { copyToClipboard } from 'quasar';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from 'src/stores/article-store';
 
 const articleStore = useArticleStore();
@@ -224,6 +224,7 @@ const imageIds = ref<Array<string>>([]);
 const imagePaths = ref<Array<string>>([]);
 const url = process.env.API;
 const route = useRoute();
+const router = useRouter();
 const article = ref<Array<Post>>([]);
 const imageTag = computed(() => {
   return (
@@ -282,12 +283,12 @@ const updateWork = () => {
     imageIds.value
   )
     .then((res) => {
-      console.log(res);
       clearAllData();
       $q.notify({
         message: res,
         type: 'positive',
       });
+      router.push({ path: '/admin/articles' });
     })
     .catch((error) => {
       if (error.response.status == 400) {
