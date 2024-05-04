@@ -17,7 +17,7 @@
         :dense="$q.screen.lt.md"
         min-height="60vh"
         max-height="60vh"
-        class="q-mt-xl"
+        class="q-mt-xl jimmy-editor"
         :toolbar="[
           [
             {
