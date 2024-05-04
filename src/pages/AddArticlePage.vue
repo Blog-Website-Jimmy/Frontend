@@ -207,7 +207,21 @@ onMounted(() => {
   });
 });
 
+const checkMainImageExists = () => {
+  return imagePaths.value.some((path) => {
+    return path.split('/')[3].includes('Main');
+  });
+};
 const saveWork = () => {
+  if (!checkMainImageExists()) {
+    $q.notify({
+      message: 'There is no Main Image!',
+      type: 'warning',
+      position: 'center',
+      timeout: 1000,
+    });
+    return;
+  }
   postArticle(
     title.value,
     brief.value,
