@@ -53,8 +53,8 @@
       <q-item-label header class="text-h6 text-white">Top posts</q-item-label>
       <q-separator />
       <q-item v-for="article in topPosts" :key="article" clickable>
-        <q-item-section class="q-px-none">
-          <q-item-label @click="toThePost(article)" class="ellipsis q-px-none">
+        <q-item-section @click="toThePost(article)" class="q-px-none">
+          <q-item-label class="ellipsis q-px-none">
             {{ article }}
           </q-item-label>
         </q-item-section>
@@ -105,8 +105,9 @@ onMounted(() => {
   });
 });
 const toThePost = (title: string) => {
-  bus.emit('givePermissionToFetchData');
-  router.push('/article/' + title);
+  router.push('/').then(() => {
+    router.push('/article/' + title);
+  });
 };
 
 const closeDrawer = () => {
