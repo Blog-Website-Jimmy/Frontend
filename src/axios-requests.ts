@@ -25,6 +25,19 @@ export const getPosts = (page: number, size: number): Promise<number> => {
       });
   });
 };
+export const getTOpPosts = (): Promise<Array<Post>> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url + 'article/top-articles')
+      .then((res) => {
+        article_store.topPosts = res.data;
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 export const getCategoryPosts = (
   page: number,
   size: number,

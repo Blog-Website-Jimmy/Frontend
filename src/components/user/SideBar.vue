@@ -52,19 +52,11 @@
     >
       <q-item-label header class="text-h6 text-white">Top posts</q-item-label>
       <q-separator />
-      <q-item clickable v-ripple>
-        <q-item-section>Single line item</q-item-section>
-      </q-item>
-
-      <q-item clickable v-ripple>
-        <q-item-section>
-          <q-item-label>Item with caption</q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item clickable v-ripple>
-        <q-item-section>
-          <q-item-label>Item with caption</q-item-label>
+      <q-item v-for="article in topPosts" :key="article" clickable>
+        <q-item-section class="q-px-none">
+          <q-item-label @click="toThePost(article)" class="ellipsis q-px-none">
+            {{ article }}
+          </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -75,7 +67,12 @@
 import { Category } from 'src/signatures';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { bus, getCategories, searchPost } from 'src/axios-requests';
+import {
+  bus,
+  getCategories,
+  searchPost,
+  getTOpPosts,
+} from 'src/axios-requests';
 import { useQuasar } from 'quasar';
 
 const router = useRouter();
@@ -98,11 +95,19 @@ const handleSubmit = () => {
 
 const search = ref('');
 const categories = ref<Array<Category>>([]);
+const topPosts = ref<Array<string>>([]);
 onMounted(() => {
   getCategories().then((data) => {
     categories.value = data;
   });
+  getTOpPosts().then((data) => {
+    data.forEach((el) => topPosts.value.push(el.title));
+  });
 });
+const toThePost = (title: string) => {
+  bus.emit('givePermissionToFetchData');
+  router.push('/article/' + title);
+};
 
 const closeDrawer = () => {
   bus.emit('closeDrawer');
