@@ -2,8 +2,6 @@ import axios from 'axios';
 import { useArticleStore } from './stores/article-store';
 import { EventBus } from 'quasar';
 import { Category, Post } from './signatures';
-import { resolve } from 'dns';
-import { rejects } from 'assert';
 
 const url = process.env.API;
 const article_store = useArticleStore();
@@ -261,6 +259,29 @@ export const getOneArticle = (title: string): Promise<Post> => {
       .get(url + 'article/get-one', { params: { title: title } })
       .then((res) => {
         resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const searchPost = (
+  keyword: string,
+  page: number,
+  size: number
+): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url + 'article/search/' + keyword, {
+        params: {
+          page: page,
+          size: size,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.articles);
+        article_store.posts = res.data.articles;
+        resolve(res.data.totalPages);
       })
       .catch((error) => {
         reject(error);

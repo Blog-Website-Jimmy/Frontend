@@ -8,22 +8,26 @@
         @click="closeDrawer"
       />
     </div>
-    <q-form>
+    <q-form @submit.prevent="handleSubmit">
       <q-input
         rounded
         bottom-slots
         v-model="search"
         outlined
         dense
-        @focus="focus"
-        @blur="unFocus"
         class="q-field--focused q-field--highlighted"
+        placeholder="search ..."
       >
         <template v-slot:prepend>
           <q-icon name="verified" color="primary" />
         </template>
         <template v-slot:append>
-          <q-icon name="search" color="primary" class="cursor-pointer" />
+          <q-icon
+            name="search"
+            color="primary"
+            class="cursor-pointer"
+            @click="handleSubmit"
+          />
         </template>
       </q-input>
     </q-form>
@@ -71,23 +75,28 @@
 import { Category } from 'src/signatures';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { bus, getCategories } from 'src/axios-requests';
+import { bus, getCategories, searchPost } from 'src/axios-requests';
+import { useQuasar } from 'quasar';
 
 const router = useRouter();
+const $q = useQuasar();
 
 const goToCategory = (category: string) => {
   bus.emit('givePermissionToFetchData');
   router.push('/category/' + category);
 };
 
-const focus = () => {
-  search.value = search.value == 'search ...' ? '' : search.value;
-};
-const unFocus = () => {
-  search.value = search.value == '' ? 'search ...' : search.value;
+const handleSubmit = () => {
+  search.value = search.value ? search.value : ' ';
+  searchPost(search.value, 0, 5).then(() => {
+    $q.notify({
+      message: 'Articles were found!',
+      type: 'positive',
+    });
+  });
 };
 
-const search = ref('search ...');
+const search = ref('');
 const categories = ref<Array<Category>>([]);
 onMounted(() => {
   getCategories().then((data) => {
