@@ -79,7 +79,12 @@ import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { Post } from 'src/signatures';
 import { computed } from 'vue';
-import { addComment, likeArticle, dislikeArticle } from 'src/axios-requests';
+import {
+  addComment,
+  likeArticle,
+  dislikeArticle,
+  getOneArticle,
+} from 'src/axios-requests';
 import { useQuasar } from 'quasar';
 import { copyToClipboard } from 'quasar';
 import { nextTick } from 'vue';
@@ -116,7 +121,6 @@ const addCommentToArticle = () => {
       });
     })
     .catch((err) => {
-      console.log(err);
       $q.notify({
         message: 'Something is wrong',
         type: 'negative',
@@ -137,7 +141,6 @@ const likeTheArticle = () => {
     like.value = 'thumb_up_alt';
   } else {
     dislikeArticle(article.value?.id).then((res) => {
-      console.log(res);
       likeCounts.value--;
       $q.notify({
         message: res,
@@ -172,8 +175,21 @@ const copytext = (event: Event) => {
 };
 
 onMounted(() => {
-  article.value = articleStore.posts.filter((post) => post.title == title)[0];
-  likeCounts.value = article.value?.likes;
+  if (articleStore.posts.length > 0) {
+    article.value = articleStore.posts.filter((post) => post.title == title)[0];
+    likeCounts.value = article.value?.likes;
+  } else {
+    getOneArticle(route.params.article)
+      .then((data) => {
+        article.value = data;
+      })
+      .catch((err) => {
+        $q.notify({
+          message: err,
+          type: 'negative',
+        });
+      });
+  }
   nextTick(() => {
     let copyBtns = document.getElementsByClassName('copy-btn');
     for (let i = 0; i < copyBtns.length; i++) {

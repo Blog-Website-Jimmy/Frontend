@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useArticleStore } from './stores/article-store';
 import { EventBus } from 'quasar';
-import { Category } from './signatures';
+import { Category, Post } from './signatures';
+import { resolve } from 'dns';
+import { rejects } from 'assert';
 
 const url = process.env.API;
 const article_store = useArticleStore();
@@ -245,6 +247,18 @@ export const deleteImage = (id: number): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
       .delete(url + 'article/delete/image/' + id)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const getOneArticle = (title: string): Promise<Post> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url + 'article/get-one', { params: { title: title } })
       .then((res) => {
         resolve(res.data);
       })
