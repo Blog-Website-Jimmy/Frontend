@@ -5,7 +5,20 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <q-input v-model="username" label="Username" hint="Email" outlined />
 
-        <q-input type="password" v-model="password" label="Password" outlined />
+        <q-input
+          :type="passwordType"
+          v-model="password"
+          label="Password"
+          outlined
+        >
+          <template v-slot:append>
+            <q-icon
+              :name="passwordTypeIcon"
+              @click="changePasswordType"
+              class="cursor-pointer"
+            />
+          </template>
+        </q-input>
 
         <div class="row justify-between">
           <q-btn label="Login" type="submit" color="primary" />
@@ -24,6 +37,8 @@ import { useQuasar } from 'quasar';
 
 const username = ref('');
 const password = ref('');
+let passwordType = ref('password');
+let passwordTypeIcon = ref('visibility');
 const router = useRouter();
 const $q = useQuasar();
 const onReset = () => {
@@ -31,11 +46,23 @@ const onReset = () => {
   password.value = '';
 };
 
+const changePasswordType = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = 'text';
+    passwordTypeIcon.value = 'visibility_off';
+  } else {
+    passwordType.value = 'password';
+    passwordTypeIcon.value = 'visibility';
+  }
+};
+
 const onSubmit = () => {
   loginUser(username.value, password.value)
     .then((res) => {
-      console.log(res);
-      router.push('/admin');
+      console.log('in login', res);
+      localStorage.setItem('token', res);
+      router.push('/admin/');
+      // console.log('in login', res);
     })
     .catch((error) => {
       console.log(error.response.data);
