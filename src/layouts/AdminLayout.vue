@@ -85,12 +85,22 @@
             <q-badge color="red" text-color="white" floating> 2 </q-badge>
             <q-tooltip>Notifications</q-tooltip>
           </q-btn>
-          <q-btn round flat>
+          <q-btn round flat @click="toggleAccountSeetings">
             <q-avatar size="26px">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
             <q-tooltip>Account</q-tooltip>
           </q-btn>
+          <q-list
+            bordered
+            separator
+            :class="accountDialog"
+            class="absolute-top-right q-mt-xl"
+          >
+            <q-item clickable class="bg-blue-10 text-white">
+              <q-item-section @click="logoutUser">Logout</q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </q-toolbar>
     </q-header>
@@ -112,6 +122,7 @@ import { bus } from 'src/axios-requests';
 
 const route = useRoute();
 const router = useRouter();
+const accountDialog = ref('hidden');
 onMounted(() => {
   console.log('route is => ', route.fullPath);
 });
@@ -135,6 +146,17 @@ const createNode = () => {
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+const toggleAccountSeetings = () => {
+  if (accountDialog.value == 'hidden') {
+    accountDialog.value = 'block';
+  } else {
+    accountDialog.value = 'hidden';
+  }
+};
+const logoutUser = () => {
+  localStorage.removeItem('token');
+  router.push('/login');
+};
 </script>
 
 <style lang="sass">
