@@ -160,7 +160,7 @@
           :key="path"
         >
           <span class="image-path">
-            {{ path }}
+            {{ shortenPath(path) }}
           </span>
 
           <q-icon
@@ -176,7 +176,7 @@
           :key="image.name"
         >
           <span class="image-path">
-            {{ image.pathOrURL }}
+            {{ shortenPath(image.pathOrURL) }}
           </span>
 
           <q-icon
@@ -206,11 +206,8 @@ import {
   deleteImage,
 } from 'src/axios-requests';
 import { Author, Category, Post } from 'src/signatures';
-import { onMounted } from 'vue';
-import { ref } from 'vue';
-import { useQuasar } from 'quasar';
-import { computed } from 'vue';
-import { copyToClipboard } from 'quasar';
+import { onMounted, computed, ref } from 'vue';
+import { useQuasar, copyToClipboard } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from 'src/stores/article-store';
 
@@ -307,6 +304,12 @@ const updateWork = () => {
         type: 'negative',
       });
     });
+};
+const shortenPath = (path: string) => {
+  return computed(() => {
+    let array = path.split('/');
+    return array[array.length - 1];
+  });
 };
 
 const clearAllData = () => {
