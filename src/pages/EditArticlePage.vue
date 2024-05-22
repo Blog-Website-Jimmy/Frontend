@@ -106,11 +106,11 @@
           @uploaded="uploadIt"
         />
       </div>
-      <div class="row justify-evenly q-mt-xl">
+      <div class="row q-mt-xl no-wrap uploaded-images">
         <q-card
           v-for="image in article.images"
           :key="image.name"
-          class="edit-article-my-card"
+          class="edit-article-my-card q-mx-xl"
         >
           <q-img :src="url + image.pathOrURL.substring(1)">
             <div class="absolute-bottom">

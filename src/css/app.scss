@@ -114,6 +114,13 @@
   width: 1070px;
   max-width: 1070px;
 }
+
+.uploaded-images {
+  max-width: 1070px;
+  width: 1070px;
+  overflow-x: scroll;
+}
+
 // ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
 
 @media only screen and (max-width: 1580px) {
