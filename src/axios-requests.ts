@@ -216,10 +216,13 @@ export const deleteArticle = (id: number): Promise<string> => {
   });
 };
 
-export const addCategory = (name: string): Promise<string> => {
+export const addCategory = (
+  name: string,
+  priority: number
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
-      .post(url + 'category/add', name)
+      .post(url + 'category/add', { name, priority })
       .then((res) => {
         resolve(res.data);
       })
@@ -229,10 +232,14 @@ export const addCategory = (name: string): Promise<string> => {
   });
 };
 
-export const updateCategory = (name: string, id: number): Promise<string> => {
+export const updateCategory = (
+  name: string,
+  id: number,
+  priority: number
+): Promise<string> => {
   return new Promise((resolve, reject) => {
     axios
-      .post(url + 'category/update/' + id, name)
+      .post(url + 'category/update/' + id, { name, priority })
       .then((res) => {
         resolve(res.data);
       })

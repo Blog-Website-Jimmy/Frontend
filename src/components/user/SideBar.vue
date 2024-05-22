@@ -44,6 +44,9 @@
       >
         <q-item-section>{{ category.name }}</q-item-section>
       </q-item>
+      <q-item clickable v-ripple>
+        <q-item-section>others ...</q-item-section>
+      </q-item>
     </q-list>
 
     <q-list

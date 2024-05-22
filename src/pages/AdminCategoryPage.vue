@@ -1,7 +1,11 @@
 <template>
   <q-page class="row items-center justify-evenly j-container">
     <div v-for="category in categories" :key="category.id" class="col-4">
-      <AdminCategoryCartComponent :id="category.id" :name="category.name" />
+      <AdminCategoryCartComponent
+        :id="category.id"
+        :name="category.name"
+        :priority="category.priority"
+      />
     </div>
     <q-dialog v-model="openAddCategory">
       <q-card>
@@ -31,7 +35,7 @@ const openAddCategory = ref(false);
 const categoryName = ref('');
 const $q = useQuasar();
 const postCategory = () => {
-  addCategory(categoryName.value)
+  addCategory(categoryName.value, 0)
     .then((data) => {
       $q.notify({
         message: data,

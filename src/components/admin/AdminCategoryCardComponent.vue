@@ -8,6 +8,12 @@
           :readonly="readonly"
           input-style="text-align: center; font-size: 20px"
         />
+        <q-input
+          v-model="categoryPriority"
+          :borderless="readonly"
+          :readonly="readonly"
+          input-style="text-align: center; font-size: 20px"
+        />
       </q-card-section>
 
       <q-separator />
@@ -32,24 +38,26 @@ import { ref } from 'vue';
 import { updateCategory, deleteCategory, bus } from 'src/axios-requests';
 import { useQuasar } from 'quasar';
 
-const props = defineProps(['id', 'name']);
+const props = defineProps(['id', 'name', 'priority']);
 
 const readonly = ref(true);
 const changed = ref(false);
 const $q = useQuasar();
 
 const categoryName = ref(props.name);
+const categoryPriority = ref(props.priority);
 const cancelChanges = () => {
   toggleReadony();
   changed.value = !changed.value;
   categoryName.value = props.name;
+  categoryPriority.value = props.priority;
 };
 
 const toggleReadony = () => {
   readonly.value = !readonly.value;
 };
 const update = () => {
-  updateCategory(categoryName.value, props.id)
+  updateCategory(categoryName.value, props.id, categoryPriority.value)
     .then((data) => {
       changed.value = false;
       readonly.value = true;
@@ -102,6 +110,9 @@ const postDeleteCategory = () => {
   });
 };
 watch(categoryName, (newVal) => {
+  changed.value = newVal !== props.name;
+});
+watch(categoryPriority, (newVal) => {
   changed.value = newVal !== props.name;
 });
 </script>

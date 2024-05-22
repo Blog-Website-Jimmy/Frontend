@@ -16,6 +16,7 @@ export interface Author {
 export interface Category {
   id: number;
   name: string;
+  priority: number;
 }
 
 export interface Comment {
