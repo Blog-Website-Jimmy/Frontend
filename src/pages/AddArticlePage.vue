@@ -172,6 +172,8 @@ import { useQuasar } from 'quasar';
 import { computed } from 'vue';
 import { copyToClipboard } from 'quasar';
 import { useRouter } from 'vue-router';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css'; // You can choose a different style
 
 const category = ref('Select One');
 const content = ref('');
@@ -206,6 +208,9 @@ onMounted(() => {
   getAuthors().then((data) => {
     console.log(data);
     authorOptions.value = data;
+  });
+  document.querySelectorAll('pre code.highlight').forEach((block) => {
+    hljs.highlightElement(block as HTMLElement);
   });
 });
 

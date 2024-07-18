@@ -206,10 +206,12 @@ import {
   deleteImage,
 } from 'src/axios-requests';
 import { Author, Category, Post } from 'src/signatures';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch, nextTick } from 'vue';
 import { useQuasar, copyToClipboard } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from 'src/stores/article-store';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css'; // You can choose a different style
 
 const articleStore = useArticleStore();
 const category = ref('Select One');
@@ -239,6 +241,18 @@ const imageUplaodURL = computed(() => {
 const $q = useQuasar();
 const categoryOptions = ref<Array<Category>>([]);
 const authorOptions = ref<Array<Author>>([]);
+const highlightCodeBlocks = () => {
+  const blocks = document.querySelectorAll('pre code.highlight');
+  hljs.highlightElement(blocks[0] as HTMLElement);
+};
+watch(content, (newContent) => {
+  console.log('Content changed', newContent);
+  // Wait for Vue to render the content
+  nextTick(() => {
+    highlightCodeBlocks();
+  });
+});
+
 onMounted(() => {
   console.log('title is', route.params.title);
   let editArticleTitle = route.params.title;

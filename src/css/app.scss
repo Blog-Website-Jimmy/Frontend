@@ -69,20 +69,26 @@
 }
 
 .copy-btn {
+  position: absolute;
+  right: 10px;
+  z-index: 10;
   color: #fff;
   padding: 3px;
   background-color: rgb(52, 111, 240);
   border-radius: 5px;
   margin-left: 10px;
+  max-height: 30px;
   cursor: pointer;
 }
 .copy-text-content {
+  position: relative;
   display: flex;
   justify-content: space-between;
   color: #fff;
-  background-color: rgb(33, 34, 32);
+  background-color: #2b2b2b;
   border-radius: 5px;
   padding: 10px;
+  text-align: left;
 }
 .drawer-close {
   display: none;
