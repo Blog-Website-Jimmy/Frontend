@@ -19,7 +19,16 @@
       />
     </div>
     <div class="q-my-lg">
-      <span class="image-tag">Click me to copy code to HTML</span>
+      <span class="image-tag">COMMAND to HTML</span>
+      <q-icon
+        class="q-ml-sm cursor-pointer"
+        size="25px"
+        name="content_copy"
+        @click="copyTextToClipboard(copyCommand)"
+      />
+    </div>
+    <div class="q-my-lg">
+      <span class="image-tag">CODE to HTML</span>
       <q-icon
         class="q-ml-sm cursor-pointer"
         size="25px"
@@ -44,41 +53,46 @@
           @click="copyTextToClipboard(path)"
         />
       </div>
+      <div v-if="article">
+        <div
+          class="row justify-between q-mt-sm"
+          v-for="image in article.images"
+          :key="image.name"
+        >
+          <span class="image-path">
+            {{ shortenPath(image.pathOrURL) }}
+          </span>
+
+          <q-icon
+            class="q-ml-sm cursor-pointer"
+            size="25px"
+            name="content_copy"
+            @click="copyTextToClipboard(image.pathOrURL)"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { copyToClipboard, useQuasar } from 'quasar';
-import { Category } from 'src/signatures';
+import { Category, Post } from 'src/signatures';
+import { shortenPath, copyTextToClipboard } from 'src/helpers';
 import { computed } from 'vue';
+
 import {} from 'quasar';
+
+const copyCommand = computed(() => {
+  return '<div class="copy-text-content"><span class="content"> copy me to clipboard</span><span class="copy-btn">copy</span></div>';
+});
+const copyCode = computed(() => {
+  return '<div class="copy-text-content"><pre><code class="java"> code to here </code> </pre> <span class="copy-command-btn">copy</span></div>';
+});
 
 const category = defineModel<string>('category', { required: true });
 const categoryOptions = defineModel<Array<Category>>('categoryOptions', {
   required: true,
 });
 const imageTag = defineModel<string>('imageTag', { required: true });
-const copyCode = defineModel<string>('copyCode', { required: true });
 const imagePaths = defineModel<Array<string>>('imagePaths', { required: true });
-
-const $q = useQuasar();
-
-const shortenPath = (path: string) => {
-  return computed(() => {
-    let array = path.split('/');
-    return array[array.length - 1];
-  });
-};
-const copyTextToClipboard = (text: string) => {
-  copyToClipboard(text)
-    .then(() => {
-      $q.notify({
-        message: 'Text was copied',
-        type: 'positive',
-      });
-    })
-    .catch(() => {
-      // fail
-    });
-};
+const article = defineModel<Array<Post>>('article', { required: false });
 </script>

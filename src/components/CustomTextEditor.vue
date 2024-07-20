@@ -79,17 +79,28 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
+import { watch, nextTick } from 'vue';
+
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
-import { watch, nextTick } from 'vue';
+
 const content = defineModel<string>('content', { required: true });
 
 const highlightCodeBlocks = () => {
-  const blocks = document.querySelectorAll('pre code.highlight');
-  hljs.highlightElement(blocks[0] as HTMLElement);
+  const blocks = document.querySelectorAll('code');
+  blocks.forEach((block) => {
+    hljs.highlightElement(block as HTMLElement);
+  });
 };
+
+onMounted(() => {
+  nextTick(() => {
+    highlightCodeBlocks();
+  });
+});
+
 watch(content, (newContent) => {
-  console.log('Content changed', newContent);
   nextTick(() => {
     highlightCodeBlocks();
   });

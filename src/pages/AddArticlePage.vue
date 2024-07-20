@@ -29,7 +29,6 @@
     <ArticleFormRightSide
       v-model:category="category"
       v-model:category-options="categoryOptions"
-      v-model:copy-code="copyCode"
       v-model:image-paths="imagePaths"
       v-model:image-tag="imageTag"
     />
@@ -71,9 +70,6 @@ const imageTag = computed(() => {
     url?.substring(0, url.length - 1) +
     '" alt="" class="article-image" />'
   );
-});
-const copyCode = computed(() => {
-  return '<div class="copy-text-content"><span class="content"> copy me to clipboard</span><span class="copy-btn">copy</span></div>';
 });
 const imageUplaodURL = computed(() => {
   return process.env.API + 'article/upload/image/' + title.value;

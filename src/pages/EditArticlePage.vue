@@ -47,9 +47,9 @@
     <ArticleFormRightSide
       v-model:category="category"
       v-model:category-options="categoryOptions"
-      v-model:copy-code="copyCode"
       v-model:image-paths="imagePaths"
       v-model:image-tag="imageTag"
+      v-model:article="article"
     />
     <div class="absolute-bottom-right q-ma-xl">
       <div class="row">
@@ -96,9 +96,7 @@ const imageTag = computed(() => {
     '" alt="" class="article-image" />'
   );
 });
-const copyCode = computed(() => {
-  return '<div class="copy-text-content"><span class="content"> copy me to clipboard</span><span class="copy-btn">copy</span></div>';
-});
+
 const imageUplaodURL = computed(() => {
   return process.env.API + 'article/upload/image/' + title.value;
 });
@@ -119,11 +117,9 @@ onMounted(() => {
   category.value = article.value.category;
 
   getCategories().then((data) => {
-    console.log(categoryOptions);
     categoryOptions.value = data;
   });
   getAuthors().then((data) => {
-    console.log(data);
     authorOptions.value = data;
   });
 });
@@ -186,8 +182,6 @@ const uploadIt = (response: any) => {
   let parsedresult = JSON.parse(result);
   let id = parsedresult.id;
   let path = parsedresult.path;
-  console.log(id);
-  console.log(path);
   imageIds.value.push(id);
   imagePaths.value.push(path);
 };

@@ -67,8 +67,22 @@
 .comment-text-area {
   height: 50px;
 }
+pre {
+  overflow-x: scroll;
+}
+pre::-webkit-scrollbar,
+pre code.hljs::-webkit-scrollbar {
+  display: none;
+}
 
-.copy-btn {
+/* Hide scrollbar for IE, Edge and Firefox */
+pre,
+pre code.hljs {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.copy-btn,
+.copy-command-btn {
   position: absolute;
   right: 10px;
   z-index: 10;
@@ -80,7 +94,8 @@
   max-height: 30px;
   cursor: pointer;
 }
-.copy-text-content {
+.copy-text-content,
+.copy-text-content > code {
   position: relative;
   display: flex;
   justify-content: space-between;

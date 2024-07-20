@@ -75,7 +75,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { useArticleStore } from 'src/stores/article-store';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { ref } from 'vue';
 import { Post } from 'src/signatures';
 import { computed } from 'vue';
@@ -86,8 +86,10 @@ import {
   getOneArticle,
 } from 'src/axios-requests';
 import { useQuasar } from 'quasar';
-import { copyToClipboard } from 'quasar';
 import { nextTick } from 'vue';
+import { copytext, copyCode } from 'src/helpers';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 
 const articleStore = useArticleStore();
 const route = useRoute();
@@ -150,28 +152,11 @@ const likeTheArticle = () => {
     like.value = 'thumb_up_off_alt';
   }
 };
-
-const copytext = (event: Event) => {
-  event.target.innerHTML = 'copied';
-  const textToCopy =
-    event.target.parentNode.querySelector('.content').textContent;
-
-  copyToClipboard(textToCopy)
-    .then(() => {
-      $q.notify({
-        message: 'Text was copied',
-        type: 'positive',
-      });
-    })
-    .catch(() => {
-      $q.notify({
-        message: 'Failed to copy text',
-        type: 'negative',
-      });
-    });
-  setTimeout(() => {
-    event.target.innerHTML = 'copy';
-  }, 5000);
+const highlightCodeBlocks = () => {
+  const blocks = document.querySelectorAll('code');
+  blocks.forEach((block) => {
+    hljs.highlightElement(block as HTMLElement);
+  });
 };
 
 onMounted(() => {
@@ -191,9 +176,21 @@ onMounted(() => {
       });
   }
   nextTick(() => {
-    let copyBtns = document.getElementsByClassName('copy-btn');
-    for (let i = 0; i < copyBtns.length; i++) {
-      copyBtns[i].addEventListener('click', copytext);
+    const copyBtns = document.getElementsByClassName('copy-btn');
+    if (copyBtns.length > 0) {
+      for (let i = 0; i < copyBtns.length; i++) {
+        copyBtns[i].addEventListener('click', copytext);
+      }
+    } else {
+      console.log('No elements with class "copy-btn" found.');
+    }
+    const copyCommandBtns = document.getElementsByClassName('copy-command-btn');
+    if (copyCommandBtns.length > 0) {
+      for (let i = 0; i < copyCommandBtns.length; i++) {
+        copyCommandBtns[i].addEventListener('click', copyCode);
+      }
+    } else {
+      console.log('No elements with class "copy-btn" found.');
     }
   });
 });
