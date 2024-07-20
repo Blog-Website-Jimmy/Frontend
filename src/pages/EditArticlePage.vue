@@ -1,94 +1,13 @@
 <template>
   <q-page class="row items-center justify-evenly q-pt-xl">
     <q-form autocorrect autocapitalize autocomplete spellcheck class="q-my-xl">
-      <div class="row q-gutter-sm">
-        <q-input v-model="title" outlined readonly />
-        <q-select
-          v-model="author"
-          :options="authorOptions"
-          option-label="name"
-          option-value="id"
-          outlined
-        />
-      </div>
-      <q-input class="q-mt-sm" v-model="brief" outlined />
-      <q-editor
-        v-model="content"
-        :dense="$q.screen.lt.md"
-        min-height="60vh"
-        max-height="60vh"
-        class="q-mt-xl jimmy-editor"
-        :toolbar="[
-          [
-            {
-              label: $q.lang.editor.align,
-              icon: $q.iconSet.editor.align,
-              fixedLabel: true,
-              list: 'only-icons',
-              options: ['left', 'center', 'right', 'justify'],
-            },
-          ],
-          ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
-          ['token', 'hr', 'link', 'custom_btn'],
-          ['print', 'fullscreen'],
-          [
-            {
-              label: $q.lang.editor.formatting,
-              icon: $q.iconSet.editor.formatting,
-              list: 'no-icons',
-              options: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'code'],
-            },
-            {
-              label: $q.lang.editor.fontSize,
-              icon: $q.iconSet.editor.fontSize,
-              fixedLabel: true,
-              fixedIcon: true,
-              list: 'no-icons',
-              options: [
-                'size-1',
-                'size-2',
-                'size-3',
-                'size-4',
-                'size-5',
-                'size-6',
-                'size-7',
-              ],
-            },
-            {
-              label: $q.lang.editor.defaultFont,
-              icon: $q.iconSet.editor.font,
-              fixedIcon: true,
-              list: 'no-icons',
-              options: [
-                'default_font',
-                'arial',
-                'arial_black',
-                'comic_sans',
-                'courier_new',
-                'impact',
-                'lucida_grande',
-                'times_new_roman',
-                'verdana',
-              ],
-            },
-            'removeFormat',
-          ],
-          ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
-
-          ['undo', 'redo'],
-          ['viewsource'],
-        ]"
-        :fonts="{
-          arial: 'Arial',
-          arial_black: 'Arial Black',
-          comic_sans: 'Comic Sans MS',
-          courier_new: 'Courier New',
-          impact: 'Impact',
-          lucida_grande: 'Lucida Grande',
-          times_new_roman: 'Times New Roman',
-          verdana: 'Verdana',
-        }"
+      <ArticleFormHeader
+        v-model:title="title"
+        v-model:author="author"
+        v-model:author-options="authorOptions"
+        v-model:brief="brief"
       />
+      <CustomTextEditor v-model:content="content" />
       <div class="row justify-evenly q-mt-xl">
         <q-uploader
           :url="imageUplaodURL"
@@ -125,74 +44,18 @@
         </q-card>
       </div>
     </q-form>
-    <div>
-      <span class="text-h5">Category</span>
-      <q-select
-        outlined
-        v-model="category"
-        :options="categoryOptions"
-        option-label="name"
-        option-value="id"
-        class="q-mt-sm"
-      />
-      <div class="q-my-lg">
-        <span class="image-tag">{{ imageTag }}</span>
-        <q-icon
-          class="q-ml-sm cursor-pointer"
-          size="25px"
-          name="content_copy"
-          @click="copyTextToClipboard(imageTag)"
-        />
-      </div>
-      <div class="q-my-lg">
-        <span class="image-tag">Click me to copy code to HTML</span>
-        <q-icon
-          class="q-ml-sm cursor-pointer"
-          size="25px"
-          name="content_copy"
-          @click="copyTextToClipboard(copyCode)"
-        />
-      </div>
-      <div class="column q-mt-md">
-        <div
-          class="row justify-between q-mt-sm"
-          v-for="path in imagePaths"
-          :key="path"
-        >
-          <span class="image-path">
-            {{ shortenPath(path) }}
-          </span>
-
-          <q-icon
-            class="q-ml-sm cursor-pointer"
-            size="25px"
-            name="content_copy"
-            @click="copyTextToClipboard(path)"
-          />
-        </div>
-        <div
-          class="row justify-between q-mt-sm"
-          v-for="image in article.images"
-          :key="image.name"
-        >
-          <span class="image-path">
-            {{ shortenPath(image.pathOrURL) }}
-          </span>
-
-          <q-icon
-            class="q-ml-sm cursor-pointer"
-            size="25px"
-            name="content_copy"
-            @click="copyTextToClipboard(image.pathOrURL)"
-          />
-        </div>
-      </div>
-      <div class="absolute-bottom-right q-ma-xl">
-        <div class="row">
-          <q-btn class="q-mr-xl" color="primary" @click="updateWork">
-            update
-          </q-btn>
-        </div>
+    <ArticleFormRightSide
+      v-model:category="category"
+      v-model:category-options="categoryOptions"
+      v-model:copy-code="copyCode"
+      v-model:image-paths="imagePaths"
+      v-model:image-tag="imageTag"
+    />
+    <div class="absolute-bottom-right q-ma-xl">
+      <div class="row">
+        <q-btn class="q-mr-xl" color="primary" @click="updateWork">
+          update
+        </q-btn>
       </div>
     </div>
   </q-page>
@@ -206,12 +69,13 @@ import {
   deleteImage,
 } from 'src/axios-requests';
 import { Author, Category, Post } from 'src/signatures';
-import { onMounted, computed, ref, watch, nextTick } from 'vue';
-import { useQuasar, copyToClipboard } from 'quasar';
+import { onMounted, computed, ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { useRoute, useRouter } from 'vue-router';
 import { useArticleStore } from 'src/stores/article-store';
-import hljs from 'highlight.js';
-import 'highlight.js/styles/atom-one-dark.css'; // You can choose a different style
+import CustomTextEditor from 'src/components/CustomTextEditor.vue';
+import ArticleFormHeader from 'src/components/ArticleFormHeader.vue';
+import ArticleFormRightSide from 'src/components/ArticleFormRightSide.vue';
 
 const articleStore = useArticleStore();
 const category = ref('Select One');
@@ -241,17 +105,6 @@ const imageUplaodURL = computed(() => {
 const $q = useQuasar();
 const categoryOptions = ref<Array<Category>>([]);
 const authorOptions = ref<Array<Author>>([]);
-const highlightCodeBlocks = () => {
-  const blocks = document.querySelectorAll('pre code.highlight');
-  hljs.highlightElement(blocks[0] as HTMLElement);
-};
-watch(content, (newContent) => {
-  console.log('Content changed', newContent);
-  // Wait for Vue to render the content
-  nextTick(() => {
-    highlightCodeBlocks();
-  });
-});
 
 onMounted(() => {
   console.log('title is', route.params.title);
@@ -319,12 +172,6 @@ const updateWork = () => {
       });
     });
 };
-const shortenPath = (path: string) => {
-  return computed(() => {
-    let array = path.split('/');
-    return array[array.length - 1];
-  });
-};
 
 const clearAllData = () => {
   title.value = '';
@@ -352,19 +199,6 @@ const checkMainImageExists = () => {
       return path.split('/')[3].includes('Main');
     })
   );
-};
-
-const copyTextToClipboard = (text: string) => {
-  copyToClipboard(text)
-    .then(() => {
-      $q.notify({
-        message: 'Text was copied',
-        type: 'positive',
-      });
-    })
-    .catch(() => {
-      // fail
-    });
 };
 
 const deleteArticleImage = (id: number) => {
