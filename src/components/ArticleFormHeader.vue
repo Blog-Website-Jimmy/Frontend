@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row q-gutter-sm">
-      <q-input v-model="title" outlined readonly />
+      <q-input v-model="title" outlined :readonly="props.titleReadOnly" />
       <q-select
         v-model="author"
         :options="authorOptions"
@@ -16,6 +16,7 @@
 <script setup lang="ts">
 import { Author } from 'src/signatures';
 
+const props = defineProps(['titleReadOnly']);
 const title = defineModel<string>('title', { required: true });
 const author = defineModel<string>('author', { required: true });
 const authorOptions = defineModel<Array<Author>>('authorOptions', {

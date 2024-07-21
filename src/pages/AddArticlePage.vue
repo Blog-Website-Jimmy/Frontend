@@ -2,6 +2,7 @@
   <q-page class="row items-center justify-evenly q-pt-xl">
     <q-form autocorrect autocapitalize autocomplete spellcheck class="q-my-xl">
       <ArticleFormHeader
+        :titleReadOnly="false"
         v-model:title="title"
         v-model:author="author"
         v-model:author-options="authorOptions"
