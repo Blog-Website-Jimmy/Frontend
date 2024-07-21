@@ -194,6 +194,10 @@ pre code.hljs {
   .article-image {
     width: 70vw;
   }
+  pre,
+  pre > span {
+    font-size: 10px !important;
+  }
 }
 @media only screen and (max-width: 600px) {
   .j-container {
