@@ -5,7 +5,7 @@
   >
     <div class="col-xs-12 col-sm-4 q-mb-xl">
       <div class="row column">
-        <span>This website is created by Jimmy Shukurov @ home</span>
+        <span>This website is created by Jimmy Shukurov @home</span>
       </div>
     </div>
     <div class="col-xs-6 col-sm-4">
