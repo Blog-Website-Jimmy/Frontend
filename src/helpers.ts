@@ -43,8 +43,8 @@ export const copytext = (event: Event) => {
 };
 export const copyCode = (event: Event) => {
   event.target.innerHTML = 'copied';
-  let commandToCopy = event.target.parentNode.querySelector('code').textContent;
-  commandToCopy = reformatCodeText(commandToCopy);
+  const commandToCopy =
+    event.target.parentNode.querySelector('pre.raw-code code').textContent;
 
   copyToClipboard(commandToCopy)
     .then(() => {
@@ -62,22 +62,4 @@ export const copyCode = (event: Event) => {
   setTimeout(() => {
     event.target.innerHTML = 'copy';
   }, 5000);
-};
-
-const reformatCodeText = (code: string) => {
-  let updated = code;
-  const pointsToAddNewine = ['{', '}'];
-  for (let i = 0; i < updated.length; i++) {
-    if (
-      i < updated.length - 1 &&
-      ((updated.charAt(i) == '}' && updated.charAt(i + 1) == ';') ||
-        (updated.charAt(i) == '{' && updated.charAt(i + 1) == '}'))
-    ) {
-      continue;
-    }
-    if (pointsToAddNewine.some((el) => el == updated.charAt(i))) {
-      updated = updated.substring(0, i + 1) + '\n' + updated.substring(i + 1);
-    }
-  }
-  return updated;
 };

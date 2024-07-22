@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="q-pb-xl">
+      <q-btn color="primary" @click="switchHighlightedCodeOnOff"
+        >switch highlighted code on off</q-btn
+      >
+    </div>
     <span class="text-h5">Category</span>
     <q-select
       outlined
@@ -78,14 +83,14 @@
 import { Category, Post } from 'src/signatures';
 import { shortenPath, copyTextToClipboard } from 'src/helpers';
 import { computed } from 'vue';
-
+import { bus } from 'src/axios-requests';
 import {} from 'quasar';
 
 const copyCommand = computed(() => {
   return '<div class="copy-text-content"><span class="content"> copy me to clipboard</span><span class="copy-btn">copy</span></div>';
 });
 const copyCode = computed(() => {
-  return '<div class="copy-text-content"><pre><code class="java"> code to here </code> </pre> <span class="copy-command-btn">copy</span></div>';
+  return '<div class="copy-code-content"><pre class="highlighted-code"><code class="java"> highlighted code to here </code> </pre> <pre class="raw-code"><code class="java"> raw code to here </code> </pre><span class="copy-command-btn">copy</span></div>';
 });
 
 const category = defineModel<string>('category', { required: true });
@@ -95,4 +100,8 @@ const categoryOptions = defineModel<Array<Category>>('categoryOptions', {
 const imageTag = defineModel<string>('imageTag', { required: true });
 const imagePaths = defineModel<Array<string>>('imagePaths', { required: true });
 const article = defineModel<Array<Post>>('article', { required: false });
+
+const switchHighlightedCodeOnOff = () => {
+  bus.emit('switchHighlightedCodeOnOff');
+};
 </script>
