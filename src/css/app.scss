@@ -85,6 +85,7 @@ pre code.hljs {
 .copy-command-btn {
   position: absolute;
   right: 10px;
+  top: 10px;
   z-index: 10;
   color: #fff;
   padding: 3px;
@@ -92,6 +93,7 @@ pre code.hljs {
   border-radius: 5px;
   margin-left: 10px;
   max-height: 30px;
+  font-size: 14px !important;
   cursor: pointer;
 }
 .copy-text-content,
@@ -145,7 +147,23 @@ pre code.hljs {
   width: 1070px;
   overflow-x: scroll;
 }
-
+.copy-code-content {
+  position: relative;
+  color: #fff;
+  background-color: #2b2b2b;
+  border-radius: 5px;
+  padding: 10px;
+  overflow-x: hidden;
+}
+.highlighted-code,
+.raw-code {
+  display: block !important;
+}
+.raw-code {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
 // ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
 
 @media only screen and (max-width: 1580px) {

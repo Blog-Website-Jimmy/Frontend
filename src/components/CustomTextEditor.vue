@@ -79,9 +79,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { watch, nextTick } from 'vue';
-
+import { bus } from 'src/axios-requests';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark.css';
 
@@ -93,10 +93,30 @@ const highlightCodeBlocks = () => {
     hljs.highlightElement(block as HTMLElement);
   });
 };
+const highlightedcodes = ref(true);
+
+const switchBtwnRawCodeAndHighCode = () => {
+  highlightedcodes.value = !highlightedcodes.value;
+  const highlighted = document.querySelectorAll('pre.highlighted-code');
+  highlighted.forEach((element) => {
+    (element as HTMLBaseElement).style.visibility = highlightedcodes.value
+      ? 'hidden'
+      : 'visible';
+  });
+  const raw = document.querySelectorAll('pre.raw-code');
+  raw.forEach((element) => {
+    (element as HTMLBaseElement).style.zIndex = highlightedcodes.value
+      ? '2'
+      : '-1';
+  });
+};
 
 onMounted(() => {
   nextTick(() => {
     highlightCodeBlocks();
+  });
+  bus.on('switchHighlightedCodeOnOff', () => {
+    switchBtwnRawCodeAndHighCode();
   });
 });
 
