@@ -34,10 +34,12 @@ import { ref } from 'vue';
 import { loginUser } from 'src/axios-requests';
 import { useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useUserStore } from 'src/stores/user-store';
 
 const username = ref('');
 const password = ref('');
-let passwordType = ref('password');
+const userStore = useUserStore();
+let passwordType = ref(<'password' | 'text'>'password');
 let passwordTypeIcon = ref('visibility');
 const router = useRouter();
 const $q = useQuasar();
@@ -59,15 +61,16 @@ const changePasswordType = () => {
 const onSubmit = () => {
   loginUser(username.value, password.value)
     .then((res) => {
-      console.log('in login', res);
-      localStorage.setItem('token', res);
-      router.push('/admin/');
-      // console.log('in login', res);
+      localStorage.setItem('token', res.token);
+      userStore.user = 'jimi';
+      userStore.token = res.token;
+
+      router.push('/admin');
     })
     .catch((error) => {
-      console.log(error.response.data);
+      console.log(error.response);
       $q.notify({
-        message: error.response.data,
+        message: error.response,
         type: 'negative',
       });
     });

@@ -119,12 +119,15 @@ import AdminSideBar from 'src/components/admin/AdminSideBar.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { bus } from 'src/axios-requests';
+import { useUserStore } from 'src/stores/user-store';
 
 const route = useRoute();
 const router = useRouter();
 const accountDialog = ref('hidden');
+const userStore = useUserStore();
+
 onMounted(() => {
-  console.log('route is => ', route.fullPath);
+  if (userStore.user == '' && userStore.token == '') router.push('/login');
 });
 watch(route, () => {
   console.log('route is => ', route.fullPath);

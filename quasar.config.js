@@ -65,7 +65,7 @@ module.exports = configure(function (ctx) {
       // analyze: true,
       env: {
         API: ctx.dev
-          ? 'http://localhost:8081/'
+          ? 'http://localhost:8080/'
           : 'https://api.blog.jemsit.net/',
       },
 
