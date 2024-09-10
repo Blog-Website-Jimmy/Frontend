@@ -16,8 +16,7 @@ export const getPosts = (page: number, size: number): Promise<number> => {
         },
       })
       .then((res) => {
-        console.log(res.data.articles);
-        article_store.posts = res.data.articles;
+        article_store.posts = res.data.content;
         resolve(res.data.totalPages);
       })
       .catch((error) => {
