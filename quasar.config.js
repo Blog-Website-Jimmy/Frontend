@@ -64,9 +64,7 @@ module.exports = configure(function (ctx) {
       // publicPath: '/',
       // analyze: true,
       env: {
-        API: ctx.dev
-          ? 'http://localhost:8080/'
-          : 'https://api.blog.jemsit.net/',
+        API: ctx.dev ? 'http://localhost:8080/' : 'http://207.154.216.78:8080/',
       },
 
       // rawDefine: {}
