@@ -55,6 +55,7 @@ import 'highlight.js/styles/atom-one-dark.css'; // You can choose a different st
 import CustomTextEditor from 'src/components/CustomTextEditor.vue';
 import ArticleFormHeader from 'src/components/ArticleFormHeader.vue';
 import ArticleFormRightSide from 'src/components/ArticleFormRightSide.vue';
+import { nextTick } from 'vue';
 
 const category = ref('Select One');
 const content = ref('');
@@ -87,8 +88,10 @@ onMounted(() => {
     console.log(data);
     authorOptions.value = data;
   });
-  document.querySelectorAll('pre code.highlight').forEach((block) => {
-    hljs.highlightElement(block as HTMLElement);
+  nextTick(() => {
+    document.querySelectorAll('pre code.highlight').forEach((block) => {
+      hljs.highlightElement(block as HTMLElement);
+    });
   });
 });
 

@@ -5,7 +5,7 @@
         <h3 class="full-width">
           {{ title }}
         </h3>
-        <p v-html="article?.content" class="article-content"></p>
+        <div v-html="article?.content" class="article-content"></div>
       </div>
     </div>
 
@@ -25,12 +25,6 @@
             {{ likeCounts }}
           </span>
         </div>
-        <!-- <q-icon
-          name="share"
-          size="35px"
-          color="primary"
-          class="cursor-pointer q-mx-xl"
-        /> -->
       </div>
       <q-form class="q-gutter-md q-mb-xl">
         <q-input
@@ -192,6 +186,7 @@ onMounted(() => {
     } else {
       console.log('No elements with class "copy-btn" found.');
     }
+    highlightCodeBlocks();
   });
 });
 </script>

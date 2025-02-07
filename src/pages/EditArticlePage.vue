@@ -77,6 +77,8 @@ import { useArticleStore } from 'src/stores/article-store';
 import CustomTextEditor from 'src/components/CustomTextEditor.vue';
 import ArticleFormHeader from 'src/components/ArticleFormHeader.vue';
 import ArticleFormRightSide from 'src/components/ArticleFormRightSide.vue';
+import { nextTick } from 'vue';
+import hljs from 'highlight.js';
 
 const articleStore = useArticleStore();
 const category = ref('Select One');
@@ -106,7 +108,6 @@ const categoryOptions = ref<Array<Category>>([]);
 const authorOptions = ref<Array<Author>>([]);
 
 onMounted(() => {
-  console.log('title is', route.params.title);
   let editArticleTitle = route.params.title;
   article.value = articleStore.posts.filter(
     (post) => post.title == editArticleTitle
@@ -122,6 +123,11 @@ onMounted(() => {
   });
   getAuthors().then((data) => {
     authorOptions.value = data;
+  });
+  nextTick(() => {
+    document.querySelectorAll('pre code.highlight').forEach((block) => {
+      hljs.highlightElement(block as HTMLElement);
+    });
   });
 });
 

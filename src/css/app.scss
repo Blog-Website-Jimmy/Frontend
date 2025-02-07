@@ -155,15 +155,6 @@ pre code.hljs {
   padding: 10px;
   overflow-x: hidden;
 }
-.highlighted-code,
-.raw-code {
-  display: block !important;
-}
-.raw-code {
-  position: absolute;
-  top: 0;
-  z-index: -1;
-}
 // ALWAYS KEEP THIS MTHFCKRS AT THE BOTTOM
 
 @media only screen and (max-width: 1580px) {
