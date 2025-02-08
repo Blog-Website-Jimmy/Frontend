@@ -79,6 +79,7 @@ import ArticleFormHeader from 'src/components/ArticleFormHeader.vue';
 import ArticleFormRightSide from 'src/components/ArticleFormRightSide.vue';
 import { nextTick } from 'vue';
 import hljs from 'highlight.js';
+import 'highlight.js/styles/atom-one-dark.css';
 
 const articleStore = useArticleStore();
 const category = ref('Select One');
@@ -124,11 +125,11 @@ onMounted(() => {
   getAuthors().then((data) => {
     authorOptions.value = data;
   });
-  nextTick(() => {
-    document.querySelectorAll('pre code.highlight').forEach((block) => {
-      hljs.highlightElement(block as HTMLElement);
-    });
-  });
+  // nextTick(() => {
+  //   document.querySelectorAll('pre code.highlight').forEach((block) => {
+  //     hljs.highlightElement(block as HTMLElement);
+  //   });
+  // });
 });
 
 const updateWork = () => {

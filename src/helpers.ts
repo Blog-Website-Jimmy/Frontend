@@ -39,14 +39,17 @@ export const copytext = (event: Event) => {
     });
   setTimeout(() => {
     event.target.innerHTML = 'copy';
-  }, 5000);
+  }, 2000);
 };
 export const copyCode = (event: Event) => {
   event.target.innerHTML = 'copied';
   const commandToCopy =
     event.target.parentNode.querySelector('pre.raw-code code').textContent;
 
-  copyToClipboard(commandToCopy)
+  let copiedCodeToText = commandToCopy;
+  copiedCodeToText = copiedCodeToText.replace(/\u00A0/g, ' ');
+
+  copyToClipboard(copiedCodeToText)
     .then(() => {
       Notify.create({
         message: 'Text was copied',
@@ -61,5 +64,5 @@ export const copyCode = (event: Event) => {
     });
   setTimeout(() => {
     event.target.innerHTML = 'copy';
-  }, 5000);
+  }, 2000);
 };

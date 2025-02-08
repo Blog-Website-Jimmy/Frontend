@@ -51,7 +51,7 @@ import { useQuasar } from 'quasar';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/atom-one-dark.css'; // You can choose a different style
+import 'highlight.js/styles/atom-one-dark.css';
 import CustomTextEditor from 'src/components/CustomTextEditor.vue';
 import ArticleFormHeader from 'src/components/ArticleFormHeader.vue';
 import ArticleFormRightSide from 'src/components/ArticleFormRightSide.vue';
@@ -88,11 +88,11 @@ onMounted(() => {
     console.log(data);
     authorOptions.value = data;
   });
-  nextTick(() => {
-    document.querySelectorAll('pre code.highlight').forEach((block) => {
-      hljs.highlightElement(block as HTMLElement);
-    });
-  });
+  // nextTick(() => {
+  //   document.querySelectorAll('pre code.highlight').forEach((block) => {
+  //     hljs.highlightElement(block as HTMLElement);
+  //   });
+  // });
 });
 
 const checkMainImageExists = () => {
