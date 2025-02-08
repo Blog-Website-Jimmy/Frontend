@@ -1,5 +1,5 @@
 <template>
-  <div class="j-side-bar">
+  <div class="j-side-bar" id="jimiSideBar">
     <div class="drawer-close">
       <q-icon
         name="close"
@@ -77,6 +77,8 @@ import {
   getTOpPosts,
 } from 'src/axios-requests';
 import { useQuasar } from 'quasar';
+import { on } from 'events';
+import { onUnmounted } from 'vue';
 
 const router = useRouter();
 const $q = useQuasar();
@@ -106,6 +108,10 @@ onMounted(() => {
   getTOpPosts().then((data) => {
     data.forEach((el) => topPosts.value.push(el.title));
   });
+  window.addEventListener('scroll', sidebarFixedWhenScroll);
+});
+onUnmounted(() => {
+  window.removeEventListener('scroll', sidebarFixedWhenScroll);
 });
 const toThePost = (title: string) => {
   router.push('/').then(() => {
@@ -116,4 +122,21 @@ const toThePost = (title: string) => {
 const closeDrawer = () => {
   bus.emit('closeDrawer');
 };
+
+function sidebarFixedWhenScroll() {
+  let header = document.getElementById('jimiSideBar');
+  let scrollPosition = window.scrollY;
+
+  if (scrollPosition > 80 && header != null) {
+    header.style.position = 'fixed';
+    header.style.maxWidth = '262px';
+    header.style.width = '243px';
+    header.style.top = '80px';
+    header.style.zIndex = '-1';
+  } else if (header != null) {
+    header.style.position = 'relative';
+    header.style.maxWidth = '262px';
+    header.style.top = '0';
+  }
+}
 </script>
