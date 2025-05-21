@@ -1,69 +1,73 @@
 <template>
-  <q-scroll-area :visible="false" style="height: 100vh; max-width: 100vw">
-    <div class="row items-center justify-evenly article-page">
-      <div>
-        <h3 class="full-width">
-          {{ title }}
-        </h3>
-        <div v-html="article?.content" class="article-content"></div>
+  <q-page>
+    <q-scroll-area :visible="false" style="height: 100vh; max-width: 100vw">
+      <div class="row items-center justify-evenly article-page">
+        <div>
+          <h3 class="full-width">
+            {{ title }}
+          </h3>
+          <div v-html="article?.content" class="article-content"></div>
+        </div>
       </div>
-    </div>
 
-    <div class="comments full-width text-subtitle1">
-      <div class="text-bold text-h6 row q-gutter-sm">
-        {{ article?.comments.length }} {{ commentsText }}
-        <q-space />
-        <div class="q-mr-xl">
-          <q-icon
-            :name="like"
-            size="35px"
-            color="teal"
-            class="cursor-pointer"
-            @click="likeTheArticle()"
+      <div class="comments full-width text-subtitle1">
+        <div class="text-bold text-h6 row q-gutter-sm">
+          {{ article?.comments.length }} {{ commentsText }}
+          <q-space />
+          <div class="q-mr-xl">
+            <q-icon
+              :name="like"
+              size="35px"
+              color="teal"
+              class="cursor-pointer"
+              @click="likeTheArticle()"
+            />
+            <span class="q-ma-sm">
+              {{ likeCounts }}
+            </span>
+          </div>
+        </div>
+        <q-form class="q-gutter-md q-mb-xl">
+          <q-input
+            v-model="author"
+            style="max-width: 200px"
+            dense
+            placeholder="Name"
+            clearable
           />
-          <span class="q-ma-sm">
-            {{ likeCounts }}
-          </span>
+          <q-input
+            v-model="comment"
+            dense
+            :type="commentTextAreaType"
+            placeholder="Your comment"
+            clearable
+            @focus="commentTextAreaType = 'textarea'"
+          />
+          <q-btn color="primary" @click="addCommentToArticle"
+            >Add Comment</q-btn
+          >
+        </q-form>
+        <div
+          v-for="comment in article?.comments"
+          :key="comment.id"
+          class="row no-wrap q-my-sm"
+        >
+          <div>
+            <q-icon
+              name="account_circle"
+              size="70px"
+              color="primary"
+              class="q-mr-sm col-2"
+            />
+          </div>
+          <div>
+            <div class="text-bold q-mt-sm col-10">{{ comment.author }}</div>
+            <div>{{ comment.comment }}</div>
+          </div>
         </div>
       </div>
-      <q-form class="q-gutter-md q-mb-xl">
-        <q-input
-          v-model="author"
-          style="max-width: 200px"
-          dense
-          placeholder="Name"
-          clearable
-        />
-        <q-input
-          v-model="comment"
-          dense
-          :type="commentTextAreaType"
-          placeholder="Your comment"
-          clearable
-          @focus="commentTextAreaType = 'textarea'"
-        />
-        <q-btn color="primary" @click="addCommentToArticle">Add Comment</q-btn>
-      </q-form>
-      <div
-        v-for="comment in article?.comments"
-        :key="comment.id"
-        class="row no-wrap q-my-sm"
-      >
-        <div>
-          <q-icon
-            name="account_circle"
-            size="70px"
-            color="primary"
-            class="q-mr-sm col-2"
-          />
-        </div>
-        <div>
-          <div class="text-bold q-mt-sm col-10">{{ comment.author }}</div>
-          <div>{{ comment.comment }}</div>
-        </div>
-      </div>
-    </div>
-  </q-scroll-area>
+    </q-scroll-area>
+  </q-page>
 </template>
 
 <script setup lang="ts">

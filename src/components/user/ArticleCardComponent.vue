@@ -1,27 +1,17 @@
 <template>
-  <div>
-    <q-card class="my-card">
-      <img :src="url + props.image" width="300" height="200" />
+  <div class="my-card">
+    <img :src="url + props.image" />
 
-      <q-card-section>
-        <div class="text-h6 ellipsis">{{ props.title }}</div>
-        <div class="text-subtitle2 ellipsis">by {{ props.author }}</div>
-      </q-card-section>
-
-      <q-card-section class="q-pt-none ellipsis">
+    <section class="details">
+      <div class="title">{{ props.title }}</div>
+      <div class="brief">
         {{ props.brief }}
-      </q-card-section>
-      <q-separator />
-
-      <q-card-actions>
-        <q-btn flat :to="{ name: 'article', params: { article: props.title } }">
-          Read
-        </q-btn>
-
-        <q-space />
-        <q-btn flat>Share</q-btn>
-      </q-card-actions>
-    </q-card>
+      </div>
+      <div class="author-date">
+        <span>by {{ props.author }}</span>
+        <span>23.08.2024</span>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -30,3 +20,75 @@ const props = defineProps(['title', 'author', 'brief', 'image']);
 
 const url = process.env.API;
 </script>
+<style scoped lang="scss">
+.my-card {
+  --font-size: 20px;
+  --border-raduis: 24px;
+  --margin-value: 12px;
+  position: relative;
+  display: flex;
+  width: var(--item-width);
+  height: var(--item-height);
+  color: var(--text-color);
+  border-radius: var(--border-raduis);
+  overflow: hidden;
+  box-shadow: 0 0 4px 4px var(--outline-main);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to top,
+      #003049 0%,
+      #002f4985 60%,
+      #ffffff00 97%
+    );
+    z-index: 2;
+  }
+  &:hover {
+    border-radius: 0;
+    box-shadow: 0 0 4px 4px var(--secondary-color);
+    &::after {
+      background: linear-gradient(
+        to top,
+        #003049 0%,
+        #002f49c5 60%,
+        #ffffff00 97%
+      );
+    }
+  }
+}
+.title {
+  font-size: calc(var(--font-size) + 4px);
+  font-weight: 700;
+  margin-bottom: var(--margin-value);
+  color: var(--text-color);
+}
+.author-date {
+  display: flex;
+  justify-content: space-between;
+}
+.brief {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  padding: 20px 12px;
+  font-size: var(--font-size);
+  z-index: 3;
+  width: var(--item-width);
+  color: var(--text-color-2);
+}
+</style>
