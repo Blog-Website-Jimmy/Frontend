@@ -52,6 +52,7 @@ footer {
   padding-inline: var(--padding-inline);
   max-width: var(--max-width-of-screen);
 }
+
 section {
   width: var(--item-width);
   display: flex;
@@ -116,7 +117,26 @@ ul {
 }
 .subscribe {
   display: flex;
+  width: 100%;
   gap: 10px;
   margin-bottom: var(--margin-value);
+}
+@media screen and (max-width: 1400px) {
+  footer {
+    --font-size: 1rem;
+  }
+}
+@media screen and (max-width: 1000px) {
+  footer {
+    section:first-child {
+      display: none;
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  footer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 </style>

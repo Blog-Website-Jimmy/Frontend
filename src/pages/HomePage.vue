@@ -5,8 +5,8 @@
         <input type="text" placeholder="Search for blog ..." />
         <span class="search-icon">
           <svg
-            width="30"
-            height="31"
+            width="100%"
+            height="100%"
             viewBox="0 0 30 31"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,6 @@ import ArticleCardComponent from 'src/components/ArticleCardComponent.vue';
 const articleStore = useArticleStore();
 
 const totalPageNumbers = ref(0);
-const backgroundColor = ref('bg-blue-5');
 
 const page = reactive({
   page: 0,
@@ -103,6 +102,8 @@ watch(page, async () => {
   display: grid;
   grid-template-columns: repeat(3, auto);
   justify-content: space-between;
+  align-items: stretch;
+  gap: calc(var(--padding-y) * 3);
   width: 100%;
 }
 .search-icon {
@@ -111,6 +112,11 @@ watch(page, async () => {
   right: calc(-1 * var(--padding-y) + 30px);
   top: var(--padding-x);
   background-color: var(--background-main);
+  --size: 30px;
+  width: var(--size);
+  height: var(--size);
+  max-width: var(--size);
+  max-height: var(--size);
 }
 .recent-section {
   padding-bottom: var(--margin-value);
@@ -120,5 +126,34 @@ watch(page, async () => {
   font-size: calc(1.28 * var(--font-size));
   font-weight: bold;
   margin-bottom: calc(var(--margin-value) / 2);
+}
+@media screen and (max-width: 1400px) {
+  .home-page {
+    --margin-value: 64px;
+    --font-size: 1rem;
+    --padding-x: 12px;
+    --padding-y: 16px;
+    --max-width: 1084px;
+    --border-radius: 24px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .cards {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+@media screen and (max-width: 700px) {
+  .home-page {
+    --margin-value: 15px;
+    .recent {
+      text-align: center;
+    }
+    margin-bottom: calc(var(--margin-value) * 4);
+  }
+  .cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 </style>

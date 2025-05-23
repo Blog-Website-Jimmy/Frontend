@@ -1,13 +1,14 @@
 <template>
   <section class="main-layout">
     <header>
-      <span class="logo"> <img src="Logo.png" alt="" /> </span>
+      <span class="logo">
+        <img src="Logo.png" alt="Logo" :width="imageWidth" />
+      </span>
       <ul>
-        <li><span class="menu">Java</span></li>
-        <li><span class="menu">Spring boot</span></li>
-        <li><span class="menu">Linux</span></li>
-        <li><span class="menu">JavaScript</span></li>
-        <li><span class="menu">Algorithms</span></li>
+        <li v-for="n in visibleMenuNumbers" :key="n">
+          <span class="menu">{{ menu[n - 1] }}</span>
+        </li>
+
         <li class="others" @click="displayOthers()">
           <span class="menu">Others</span>
           <span class="icon chevron-down">
@@ -28,11 +29,9 @@
             </svg>
           </span>
           <ul class="dropdown">
-            <li>Kotlin</li>
-            <li>C++</li>
-            <li>Desktop</li>
-            <li>Mobile</li>
-            <li>All</li>
+            <li v-for="n in menu.length - visibleMenuNumbers + 1" :key="n">
+              {{ menu[n + visibleMenuNumbers - 1] }}
+            </li>
           </ul>
         </li>
       </ul>
@@ -114,7 +113,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue';
 import SideBar from 'src/components/SideBar.vue';
 import { useRouter, useRoute } from 'vue-router';
 import FooterComponent from 'src/components/FooterComponent.vue';
@@ -123,11 +122,24 @@ import RegisterUserComponent from 'src/components/auth/RegisterUserComponent.vue
 import ConfirmAuthComponent from 'src/components/auth/ConfirmAuthComponent.vue';
 import ForgotPasswordComponent from 'src/components/auth/ForgotPasswordComponent.vue';
 import ResetPasswordComponent from 'src/components/auth/ResetPasswordComponent.vue';
-
+import { useQuasar } from 'quasar';
 const route = useRoute();
 const router = useRouter();
 const showLogin = ref(false);
 const auth = ref('login');
+const visibleMenuNumbers = ref(4);
+const $q = useQuasar();
+const menu: string[] = [
+  'Java',
+  'Spring boot',
+  'Linux',
+  'Javascript',
+  'Algorithms',
+  'Kotlin',
+  'C++',
+  'Desktop',
+  'Mobile',
+];
 
 const displayOthers = () => {
   const dropdown = document.querySelector('.dropdown') as HTMLElement;
@@ -152,6 +164,11 @@ const toggleAuth = (value: string) => {
   auth.value = value;
 };
 
+const imageWidth = computed(() => {
+  if ($q.screen.lt.sm) return 190;
+  if ($q.screen.width < 1400) return 150;
+  return 190;
+});
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
 });
@@ -298,6 +315,25 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+@media screen and (max-width: 1400px) {
+  .main-layout {
+    --font-size: 1rem;
+  }
+}
+@media screen and (max-width: 1000px) {
+  header {
+    justify-content: center;
+    ul,
+    button {
+      display: none;
+    }
+  }
+}
+@media screen and (max-width: 700px) {
+  footer {
+    border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
   }
 }
 </style>

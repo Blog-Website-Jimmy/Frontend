@@ -22,8 +22,8 @@ const url = process.env.API;
 </script>
 <style scoped lang="scss">
 .my-card {
-  --font-size: 20px;
-  --border-raduis: 24px;
+  --font-size: 1.5rem;
+  --border-raduis: var(--card-border-radius);
   --margin-value: 12px;
   position: relative;
   display: flex;
@@ -90,5 +90,29 @@ const url = process.env.API;
   z-index: 3;
   width: var(--item-width);
   color: var(--text-color-2);
+  width: 100%;
+}
+@media screen and (max-width: 1400px) {
+  .my-card {
+    --card-width: 25vw;
+    --card-height: calc(var(--card-width) * 0.75);
+    --font-size: 1rem;
+    width: var(--card-width);
+    height: var(--card-height);
+  }
+}
+@media screen and (max-width: 1000px) {
+  .my-card {
+    --card-width: 35vw;
+    --card-height: calc(var(--card-width) * 0.75);
+    width: var(--card-width);
+    height: var(--card-height);
+  }
+}
+@media screen and (max-width: 700px) {
+  .my-card {
+    width: var(--item-width);
+    height: var(--item-height);
+  }
 }
 </style>
