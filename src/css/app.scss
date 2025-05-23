@@ -8,6 +8,7 @@
   --button-main: #d62839;
   --outline-main: #219ebc;
   --extra-color: #f77f00;
+  --link-color: #00f736;
   --padding-inline: 185px;
   --item-width: 400px;
   --item-height: 300px;
@@ -19,7 +20,8 @@ body::-webkit-scrollbar {
 }
 button {
   all: unset;
-}
-button:active {
-  transform: scale(0.97);
+  cursor: pointer;
+  &:active {
+    transform: scale(0.97);
+  }
 }

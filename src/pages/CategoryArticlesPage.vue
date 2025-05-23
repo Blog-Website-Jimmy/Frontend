@@ -53,7 +53,7 @@ import { getCategoryPosts } from 'src/axios-requests';
 import { useArticleStore } from 'src/stores/article-store';
 import { useRoute } from 'vue-router';
 import { bus } from 'src/axios-requests';
-import ArticleCardComponent from 'components/user/ArticleCardComponent.vue';
+import ArticleCardComponent from 'src/components/ArticleCardComponent.vue';
 import { getMianImage } from 'src/components/models';
 
 const articleStore = useArticleStore();

@@ -36,9 +36,8 @@
           </ul>
         </li>
       </ul>
-      <button>
+      <button @click="toggleLogin()">
         <span>Login</span>
-
         <span class="icon">
           <svg
             height="100%"
@@ -79,17 +78,56 @@
     <footer>
       <FooterComponent />
     </footer>
+    <div v-show="showLogin" class="login">
+      <div class="layer"></div>
+      <LoginUserComponent
+        v-show="auth == 'login'"
+        @toggle-login="toggleLogin"
+        @swtich-to-regsiter="toggleAuth"
+        @forgot-password="toggleAuth"
+        class="component"
+      />
+      <RegisterUserComponent
+        v-show="auth == 'register'"
+        @toggle-login="toggleLogin"
+        @register="toggleAuth"
+        class="component"
+      />
+      <ConfirmAuthComponent
+        v-show="auth == 'confirm-auth'"
+        @toggle-login="toggleLogin"
+        class="component"
+      />
+      <ForgotPasswordComponent
+        v-show="auth == 'forgot-password'"
+        @toggle-login="toggleLogin"
+        @reset="toggleAuth"
+        class="component"
+      />
+      <ResetPasswordComponent
+        v-show="auth == 'reset'"
+        @toggle-login="toggleLogin"
+        class="component"
+      />
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import SideBar from 'src/components/user/SideBar.vue';
+import SideBar from 'src/components/SideBar.vue';
 import { useRouter, useRoute } from 'vue-router';
-import FooterComponent from 'src/components/user/FooterComponent.vue';
+import FooterComponent from 'src/components/FooterComponent.vue';
+import LoginUserComponent from 'src/components/auth/LoginUserComponent.vue';
+import RegisterUserComponent from 'src/components/auth/RegisterUserComponent.vue';
+import ConfirmAuthComponent from 'src/components/auth/ConfirmAuthComponent.vue';
+import ForgotPasswordComponent from 'src/components/auth/ForgotPasswordComponent.vue';
+import ResetPasswordComponent from 'src/components/auth/ResetPasswordComponent.vue';
 
 const route = useRoute();
 const router = useRouter();
+const showLogin = ref(false);
+const auth = ref('login');
 
 const displayOthers = () => {
   const dropdown = document.querySelector('.dropdown') as HTMLElement;
@@ -105,6 +143,13 @@ const handleClickOutside = (event: MouseEvent) => {
     dropdown.style.display = 'none';
     document.querySelector('.chevron-down')?.classList.remove('up');
   }
+};
+const toggleLogin = () => {
+  showLogin.value = !showLogin.value;
+  auth.value = 'login';
+};
+const toggleAuth = (value: string) => {
+  auth.value = value;
 };
 
 onMounted(() => {
@@ -124,6 +169,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   width: 100%;
   align-items: center;
+  overflow: hidden;
 }
 
 .logo {
@@ -232,5 +278,26 @@ footer {
   background-color: var(--background-main-2);
   padding-block: 20px;
   margin: auto;
+}
+.login {
+  position: fixed;
+  z-index: 15;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  .layer {
+    --blur-amount: 2px;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    background-color: #002f4946;
+  }
+  .component {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 </style>

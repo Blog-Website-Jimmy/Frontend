@@ -40,7 +40,7 @@ import { onMounted, reactive, ref, watch } from 'vue';
 import { getPosts } from 'src/axios-requests';
 import { useArticleStore } from 'src/stores/article-store';
 import { getMianImage } from 'src/components/models';
-import ArticleCardComponent from 'src/components/user/ArticleCardComponent.vue';
+import ArticleCardComponent from 'src/components/ArticleCardComponent.vue';
 
 const articleStore = useArticleStore();
 

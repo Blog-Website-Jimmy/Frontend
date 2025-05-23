@@ -11,7 +11,7 @@
     </section>
     <section>
       <div class="subscribe">
-        <input type="text" placeholder="example@gmail.com" />
+        <input type="email" placeholder="example@gmail.com" />
         <button>subscribe</button>
       </div>
       <button>
