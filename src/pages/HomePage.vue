@@ -29,6 +29,7 @@
           :author="post.author.name"
           :brief="post.brief"
           :image="getMianImage(post.images)"
+          @click="goToArticle(post.title)"
         />
       </div>
     </section>
@@ -41,10 +42,11 @@ import { getPosts } from 'src/axios-requests';
 import { useArticleStore } from 'src/stores/article-store';
 import { getMianImage } from 'src/components/models';
 import ArticleCardComponent from 'src/components/ArticleCardComponent.vue';
-
+import { useRouter, useRoute } from 'vue-router';
 const articleStore = useArticleStore();
 
 const totalPageNumbers = ref(0);
+const router = useRouter();
 
 const page = reactive({
   page: 0,
@@ -65,6 +67,9 @@ watch(page, async () => {
       console.error('Error:', error);
     });
 });
+const goToArticle = (articleName: string) => {
+  router.push({ name: 'articel', params: { article: articleName } });
+};
 </script>
 
 <style scoped lang="scss">

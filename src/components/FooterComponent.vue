@@ -3,9 +3,11 @@
     <section>This website was created by Jimmy @home</section>
     <section>
       <ul>
-        <li>Ask Question</li>
-        <li>Portfolio</li>
-        <li>Linkedin</li>
+        <li @click="gotoLink('https://jemsit.info/contact')">Ask Question</li>
+        <li @click="gotoLink('https://jemsit.info/')">Portfolio</li>
+        <li @click="gotoLink('https://www.linkedin.com/in/jemshit-shukurov/')">
+          Linkedin
+        </li>
         <li>Jobs</li>
       </ul>
     </section>
@@ -35,7 +37,11 @@
   </footer>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const gotoLink = (destiantion: string) => {
+  window.open(destiantion, '_blank');
+};
+</script>
 
 <style scoped lang="scss">
 footer {

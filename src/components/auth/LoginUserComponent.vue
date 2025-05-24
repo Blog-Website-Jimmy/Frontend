@@ -32,7 +32,7 @@
       </svg>
     </span>
     <div class="center">
-      <span>Welcome</span>
+      <span class="title">Welcome</span>
       <input
         type="text"
         autofocus
@@ -189,7 +189,7 @@ const login = () => {
       position: absolute;
       right: 10px;
       cursor: pointer;
-      --size: 40px;
+      --size: calc(var(--item-size) * 4 - 4px);
       width: var(--size);
       height: var(--size);
       max-width: var(--size);
@@ -249,6 +249,24 @@ const login = () => {
     background-color: var(--button-main);
     padding: calc(var(--pading-value) - 2px);
     border-radius: var(--item-size);
+  }
+}
+@media screen and (max-width: 1000px) {
+  .login {
+    --font-size: 1rem;
+    --pading-value: 8px;
+    --item-size: 8px;
+    padding: 32px 75px;
+    gap: calc(var(--pading-value) * 1);
+    max-width: 400px;
+  }
+  .center {
+    .title {
+      font-size: calc(var(--font-size) + 5px);
+    }
+    input {
+      font-size: var(--font-size);
+    }
   }
 }
 </style>
