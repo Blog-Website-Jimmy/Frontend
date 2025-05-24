@@ -32,7 +32,7 @@
       </svg>
     </span>
     <div class="center">
-      <span>Forgot the password </span>
+      <span class="title">Forgot password </span>
       <input type="text" placeholder="Type mobile phone or email ... " />
       <div class="numbers">
         <input
@@ -181,8 +181,8 @@ onUnmounted(() => {
   }
   > .numbers input {
     width: 100%;
-    max-width: 90px;
-    height: 150px;
+    max-width: calc(var(--item-size) * 7.5);
+    height: calc(var(--item-size) * 12.5);
     outline: none;
     background-color: inherit;
     padding: calc(var(--pading-value) - 2px);
@@ -203,6 +203,30 @@ onUnmounted(() => {
     background-color: var(--button-main);
     padding: calc(var(--pading-value) - 2px);
     border-radius: var(--item-size);
+  }
+}
+@media screen and (max-width: 1000px) {
+  .login {
+    --font-size: 1rem;
+    --pading-value: 8px;
+    --item-size: 8px;
+    padding: 32px 75px;
+    gap: calc(var(--pading-value) * 1);
+    max-width: 400px;
+  }
+  .center {
+    > .numbers input {
+      width: 25px;
+      height: 25px;
+      border-radius: 1px;
+      font-size: var(--font-size);
+    }
+    .title {
+      font-size: calc(var(--font-size) + 5px);
+    }
+    input {
+      font-size: var(--font-size);
+    }
   }
 }
 </style>

@@ -1,6 +1,23 @@
 <template>
   <section class="main-layout">
     <header>
+      <span class="hamburger-menu" @click.stop="toggleSidebar">
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 24H42M6 12H42M6 36H42"
+            stroke="#F3F3F3"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
       <span class="logo">
         <img src="Logo.png" alt="Logo" :width="imageWidth" />
       </span>
@@ -110,6 +127,15 @@
       />
     </div>
   </section>
+  <aside ref="sidebar" class="sidebar-menu">
+    <Transition name="slide-fade">
+      <SideBar
+        v-if="showSidebar"
+        @close-sidebar-menu="toggleSidebar()"
+        @toggle-login="toggleLogin()"
+      />
+    </Transition>
+  </aside>
 </template>
 
 <script setup lang="ts">
@@ -123,23 +149,15 @@ import ConfirmAuthComponent from 'src/components/auth/ConfirmAuthComponent.vue';
 import ForgotPasswordComponent from 'src/components/auth/ForgotPasswordComponent.vue';
 import ResetPasswordComponent from 'src/components/auth/ResetPasswordComponent.vue';
 import { useQuasar } from 'quasar';
+import { menus } from 'src/shared/menus';
 const route = useRoute();
 const router = useRouter();
 const showLogin = ref(false);
 const auth = ref('login');
-const visibleMenuNumbers = ref(4);
 const $q = useQuasar();
-const menu: string[] = [
-  'Java',
-  'Spring boot',
-  'Linux',
-  'Javascript',
-  'Algorithms',
-  'Kotlin',
-  'C++',
-  'Desktop',
-  'Mobile',
-];
+const menu: string[] = menus;
+const showSidebar = ref(false);
+const sidebar = ref<HTMLElement | null>(null);
 
 const displayOthers = () => {
   const dropdown = document.querySelector('.dropdown') as HTMLElement;
@@ -163,17 +181,30 @@ const toggleLogin = () => {
 const toggleAuth = (value: string) => {
   auth.value = value;
 };
-
+const toggleSidebar = () => {
+  showSidebar.value = !showSidebar.value;
+};
+const visibleMenuNumbers = computed(() => {
+  if ($q.screen.width < 1400) return 4;
+  return 5;
+});
 const imageWidth = computed(() => {
   if ($q.screen.lt.sm) return 190;
   if ($q.screen.width < 1400) return 150;
   return 190;
 });
+const clickOutside = (event: MouseEvent) => {
+  if (sidebar.value && !sidebar.value?.contains(event.target as Node)) {
+    showSidebar.value = false;
+  }
+};
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);
+  document.addEventListener('click', clickOutside);
 });
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside);
+  document.removeEventListener('click', clickOutside);
 });
 </script>
 <style scoped lang="scss">
@@ -187,6 +218,7 @@ onBeforeUnmount(() => {
   width: 100%;
   align-items: center;
   overflow: hidden;
+  position: relative;
 }
 
 .logo {
@@ -298,7 +330,7 @@ footer {
 }
 .login {
   position: fixed;
-  z-index: 15;
+  z-index: 25;
   width: 100%;
   height: 100%;
   top: 0;
@@ -317,6 +349,35 @@ footer {
     transform: translate(-50%, -50%);
   }
 }
+.hamburger-menu {
+  --size: 48px;
+  width: var(--size);
+  height: var(--size);
+  max-width: var(--size);
+  max-height: var(--size);
+  display: none;
+}
+.sidebar-menu {
+  display: none;
+  width: max-content;
+  position: absolute;
+  top: 0;
+  position: fixed;
+  z-index: 24;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(-50px);
+  opacity: 0;
+}
 @media screen and (max-width: 1400px) {
   .main-layout {
     --font-size: 1rem;
@@ -329,11 +390,24 @@ footer {
     button {
       display: none;
     }
+    position: relative;
+  }
+  .hamburger-menu {
+    display: block;
+    position: absolute;
+    left: var(--padding-inline);
+  }
+  .sidebar-menu {
+    display: flex;
   }
 }
 @media screen and (max-width: 700px) {
   footer {
     border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+  }
+  .hamburger-menu {
+    --size: 32px;
+    top: 0;
   }
 }
 </style>
