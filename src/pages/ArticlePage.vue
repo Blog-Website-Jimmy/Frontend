@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <div class="article-page">
     <q-scroll-area :visible="false" style="height: 100vh; max-width: 100vw">
       <div class="row items-center justify-evenly article-page">
         <div>
@@ -67,7 +67,7 @@
         </div>
       </div>
     </q-scroll-area>
-  </q-page>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -194,3 +194,10 @@ onMounted(() => {
   });
 });
 </script>
+<style scoped lang="scss">
+.article-page {
+  --font-size: 1.5rem;
+  font-size: var(--font-size);
+  color: var(--text-color);
+}
+</style>

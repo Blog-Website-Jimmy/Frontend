@@ -68,7 +68,8 @@ watch(page, async () => {
     });
 });
 const goToArticle = (articleName: string) => {
-  router.push({ name: 'articel', params: { article: articleName } });
+  console.log('jimi go to article');
+  router.push({ name: 'article', params: { article: articleName } });
 };
 </script>
 

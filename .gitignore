@@ -2,6 +2,21 @@
 .thumbs.db
 node_modules
 
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Terraform variable overrides (can contain secrets)
+*.tfvars
+
+# Sensitive or local-only credentials
+.terraform
+.terraform.lock.hcl
+
+
 # Quasar core related directories
 .quasar
 /dist
